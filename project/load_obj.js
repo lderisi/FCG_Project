@@ -79,4 +79,22 @@ async function load_obj(gl,objHref,use_MTL=true){
 
 }
 
+function createUniform(u_colorMult,u_color,u_texture,u_world){
+    return {
+        u_colorMult: u_colorMult,
+        u_color: u_color,
+        u_texture: u_texture,
+        u_world: u_world,
+    }
+
+}
+
+function createDiffuseUniform(u_world,diffuseMap){
+    return {
+        u_world: u_world,
+        diffuseMap: diffuseMap,
+    }
+
+}
+
 

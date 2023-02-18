@@ -15,7 +15,9 @@ async function main() {
     return alert('need WEBGL_depth_texture');
   }
 
+  setControlsRender(render)
   define_gui();
+  attachEvents()
   
   const sceneProgramInfo = webglUtils.createProgramInfo(gl, ['vertex-shader-3d', 'fragment-shader-3d']);
   const colorProgramInfo = webglUtils.createProgramInfo(gl, ['color-vertex-shader', 'color-fragment-shader']);
@@ -88,81 +90,39 @@ async function main() {
   const parts_build3 = await load_obj(gl,'data/building.obj',false);
 
   // OTHER SCENE OBJECTS
+
+  
   // TREE MODEL
   const parts_tree = await load_obj(gl,'data/pino.obj',false);
   
 
-   //UNIFORMS
-   const ceilingUniforms = {
-    u_world:m4.scale(m4.xRotate(m4.translation(0, 50, 0),3.14159),5,5,5),
-    u_texture: txt[BRICKS2],
-  };
+  //UNIFORMS
+   const ceilingUniforms = createUniform(null,null,txt[BRICKS2],m4.scale(m4.xRotate(m4.translation(0, 50, 0),3.14159),5,5,5));
+   const floorUniforms = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[WOOD],m4.scale(m4.translation(0,0,0),5,5,5))
 
-  const floorUniforms = {
-    u_colorMult: [1, 1, 1, 1],
-    u_color: [1, 1, 1, 1],
-    u_texture: txt[WOOD],
-    u_world: m4.scale(m4.translation(0,0,0),5,5,5),
-  };
-//FRONT
-  const wallUniforms1 = {
-    u_colorMul: [1, 0.5, 1, 1],  
-    u_color: [1, 1, 1, 1],
-    u_texture: txt[BRICKS],
-    u_world: m4.scale(m4.xRotate(m4.translation(0, 25, 25),-1.5708),5,5,5), 
-  };
-//SX
-  const wallUniforms2 = {
-    u_colorMult: [1, 1, 1, 1],  
-    u_color: [1, 1, 1, 1],
-    u_texture: txt[BRICKS],
-    u_world: m4.scale(m4.yRotate(m4.zRotate(m4.translation(25, 25, 0),degToRad(90)),degToRad(90)),5,5,5), 
-  };
-//DX
-  const wallUniforms3 = {
-    u_colorMult: [1, 1, 1, 1],
-    u_color: [1, 1, 1, 1],
-    u_texture: txt[BRICKS],
-    u_world: m4.scale(m4.yRotate(m4.zRotate(m4.translation(-25, 25, 0),degToRad(-90)),degToRad(-90)),5,5,5), 
-  };
-  
+  //FRONT
+  const wallUniforms1 = createUniform([1, 0.5, 1, 1],[1, 1, 1, 1],txt[BRICKS],m4.scale(m4.xRotate(m4.translation(0, 25, 25),-1.5708),5,5,5))
+
+  //SX
+  const wallUniforms2 = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[BRICKS],m4.scale(m4.yRotate(m4.zRotate(m4.translation(25, 25, 0),degToRad(90)),degToRad(90)),5,5,5)) 
+ 
+  //DX
+  const wallUniforms3 = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[BRICKS],m4.scale(m4.yRotate(m4.zRotate(m4.translation(-25, 25, 0),degToRad(-90)),degToRad(-90)),5,5,5)) 
+ 
   //BACK
-  const wallUniforms4 = {
-    u_colorMult: [1, 1, 1, 1],
-    u_color: [1, 1, 1, 1],
-    u_texture: txt[BRICKS],
-    u_world: m4.scale(m4.yRotate(m4.xRotate(m4.translation(0, 25, -25),degToRad(90)),degToRad(180)),5,5,5), 
-  };
+  const wallUniforms4 = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[BRICKS],m4.scale(m4.yRotate(m4.xRotate(m4.translation(0, 25, -25),degToRad(90)),degToRad(180)),5,5,5))
 
+  var truckUniforms = createUniform(null,null,null,m4.yRotate(m4.translation(0, 0, 0),3.1415))
+  
+  const fountainUniforms = createDiffuseUniform(m4.scale(m4.yRotate(m4.translation(11.7, 2.2, 15.5),3.1415),1.5,1.5,1.5),txt[TV])
 
-  var truckUniforms = {
-    u_world: m4.yRotate(m4.translation(0, 0, 0),3.1415),
-  };
+  const buildingUniforms = createDiffuseUniform(m4.scale(m4.yRotate(m4.translation(-9, 0, -11.8),degToRad(90)),1.5,2.5,1.5),txt[WINDOW])
+  
+  const buildingUniforms1 = createDiffuseUniform(m4.scale(m4.yRotate(m4.translation(-20, 0, 20),3.1415),0.04,0.04,0.04),txt[BUILD]) 
+  
+  const buildingUniforms3 = createDiffuseUniform(m4.scale(m4.yRotate(m4.translation(20, 0, 20),3.1415),0.025,0.025,0.025),txt[BUILD])
 
-  const fountainUniforms = {
-    u_world: m4.scale(m4.yRotate(m4.translation(11.7, 2.2, 15.5),3.1415),1.5,1.5,1.5),
-    diffuseMap: txt[TV],
-  };
-
-  const buildingUniforms = {
-    u_world: m4.scale(m4.yRotate(m4.translation(-9, 0, -11.8),degToRad(90)),1.5,2.5,1.5),
-    diffuseMap: txt[WINDOW],
-  };
-
-  const buildingUniforms1 = {
-    u_world: m4.scale(m4.yRotate(m4.translation(-20, 0, 20),3.1415),0.04,0.04,0.04),
-    diffuseMap: txt[BUILD],
-  };
-
-  const buildingUniforms3 = {
-    u_world: m4.scale(m4.yRotate(m4.translation(20, 0, 20),3.1415),0.025,0.025,0.025),
-    diffuseMap: txt[BUILD],
-  };
-
-  const treeUniforms = {
-    u_world: m4.scale(m4.xRotate(m4.translation(22, 0, -12),degToRad(-90)),1,1,1),
-    diffuseMap: txt[TREE],
-  };
+  const treeUniforms = createDiffuseUniform(m4.scale(m4.xRotate(m4.translation(22, 0, -12),degToRad(-90)),1,1,1),txt[TREE])
 
 
   // SOME BASE AND SHADOWS SETTINGS
@@ -219,46 +179,7 @@ async function main() {
       gl.TEXTURE_2D,         
       unusedTexture,        
       0);   
-      
-  function define_gui() {
-    var gui = new dat.GUI();
-    
-    gui.add(settings,"D").min(4).max(100).step(0.5).onChange(function() {
-      render();});
-    gui.add(settings,"posX").min(0).max(10).step(0.5).onChange(function() {
-      render();});
-    gui.add(settings,"posY").min(0).max(10).step(0.5).onChange(function() {
-      render();});
-    gui.add(settings,"posZ").min(0).max(10).step(0.5).onChange(function() {
-      render();});
-    gui.add(settings,"targetX").min(0).max(5).step(0.5).onChange(function() {
-      render();});
-    gui.add(settings,"targetY").min(-1).max(5).step(0.5).onChange(function() {
-      render();});
-    gui.add(settings,"targetZ").min(0).max(5).step(0.5).onChange(function() {
-      render();});
-    gui.add(settings,"projWidth").min(0).max(7).step(0.5).onChange(function() {
-      render();});
-    gui.add(settings,"projHeight").min(0).max(7).step(0.5).onChange(function() {
-      render();});
-    gui.add(settings,"bias").min(-0.01).max(0.001).step(0.0001).onChange(function() {
-      render();});
-    gui.add(settings,"lightFieldOfView").min(60).max(120).step(5).onChange(function() {
-      render();});
-    gui.add(settings,"dx").min(-24).max(24).step(0.1).onChange(function() {
-      render();});
-    gui.add(settings,"dz").min(-23).max(23).step(0.1).onChange(function() {
-      render();});
-    gui.add(settings,"spotLight").onChange(function() {
-      render();});
-    gui.add(settings,"lightFrustum").onChange(function() {
-      render();});
-    gui.add(settings,"shadows").onChange(function() {
-      render();});
-
-    gui.close();
-}  
-
+ 
 function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatrix,programInfo) {
 
   const viewMatrix = m4.inverse(cameraMatrix);
@@ -382,170 +303,6 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
            }
 
   }
-
-  
-  var THETA = degToRad(10), PHI = degToRad(50);
-  var drag, old_x, old_y, dX, dY;
-  
-  canvas.addEventListener("mouseup", function(e) {
-      drag = false;
-  }, false)
-
-  canvas.addEventListener("mousemove", function(e) {
-      if (!drag) {
-          return false; 
-      }
-      dX = -(e.pageX - old_x) * 2 * Math.PI / canvas.width; 
-      dY = -(e.pageY - old_y) * 2 * Math.PI / canvas.height; 
-      THETA += dX;
-      PHI += dY;
-      old_x = e.pageX;
-      old_y = e.pageY; 
-      e.preventDefault();
-      render();
-  }, false);
-
-  // MOUSE WHEEL
-  canvas.onwheel = function(event) {
-    if (event.deltaY > 0) {
-      // down
-      settings.D += 1;
-      render();      
-    } else {
-      // up
-      settings.D -= 1;
-      render();
-    }
-  }
-
-
-  let clicked = false;
-//CLICK WHEEL
-// Whenever the user starts pressing any mouse button
-document.addEventListener('mousedown', e => {
-  // Check if the click is the middle button
-  if(e.which !== 2 && e.which !== 4 && e.which !== 5)  
-  drag = true;
-  old_x = e.pageX
-  old_y = e.pageY;
-  e.preventDefault();
-  console.log(e);
-
-  
-  // Click up programmable mouse button -> ON/OFF SHADOWS
-  if(e.which === 5){
-    THETA = degToRad(-10), PHI = degToRad(-50);
-    //settings.shadows = true;
-    render();
-}
-
-/*
-if(e.which === 4){
-  if(settings.shadows = true){
-  THETA = degToRad(100), PHI = degToRad(500);
-  render();
-}}*/
- 
-
-  if (e.which === 2 && !clicked) {
-    clicked = true;
-    // Do something when the user does middle click
-    alert('Keypad on')
-    window.addEventListener("keydown", function (event) {
-      /*
-      //W
-      if(event.keyCode == 87){
-        if(settings.dz>=-21.5){
-          settings.dz -= 1;
-          render();
-      }
-      }
-      //S
-      if(event.keyCode == 83){
-        if(settings.dz>=-22){
-          settings.dz += 1;
-          render();
-      }
-      }
-      //A
-      if(event.keyCode == 65){
-        if(settings.dx>=-21.5){
-          settings.dx -= 1;
-          render();
-      }
-      }
-      //D
-      if(event.keyCode == 68){
-        if(settings.dx>-21.5){
-          settings.dx += 1;
-          render();
-      }
-      }
-    */
-        if (event.defaultPrevented) {
-            return;
-        }
-        switch (event.key) {
-          case "ArrowLeft": 
-            if(settings.dz>=-21.5){
-            angle += degToRad(2);
-              render();
-              }
-              break;
-          case "ArrowUp": 
-              if(settings.dz>=-21.5 && settings.dx>=-21.5){
-              settings.dx -= Math.sin(angle);
-              settings.dz -= Math.cos(angle);
-              render();
-          }
-              break;
-          case "ArrowRight":
-              if(settings.dz>=-21.5){
-              angle -= degToRad(2);
-              render();
-              }
-              break;
-          case "ArrowDown": 
-              if(settings.dz<=21.5 && settings.dx<=21.5){
-              settings.dx += Math.sin(angle);
-              settings.dz += Math.cos(angle);
-              render();
-          }
-              break;
-          default:
-              return; 
-      }
-      event.preventDefault(); 
-    }, true);
-    // Prevent default middle click behaviour of the middle click
-    e.preventDefault()
-  }
-})
-
-canvas.addEventListener("touchstart", function (e) {
-    drag = true;
-    old_x =  e.touches[0].clientX;
-    old_y =  e.touches[0].clientY;
-    e.preventDefault();  
-}, false);
-
-canvas.addEventListener("touchend", function (e) {
-    drag = false;
-}, false);
-
-canvas.addEventListener("touchmove", function (e) {
-    if (!drag) {
-        return false; 
-    }
-    dX = -(e.touches[0].clientX - old_x) * 2 * Math.PI / canvas.width; 
-    dY = -(e.touches[0].clientY - old_y) * 2 * Math.PI / canvas.height; 
-    THETA += dX;
-    PHI += dY;
-    old_x = e.touches[0].clientX;
-    old_y = e.touches[0].clientY;
-    e.preventDefault();
-    render();
-}, false);
 
 
   function render() {

@@ -398,7 +398,7 @@ THETA+=dX;
 PHI+=dY;
 old_x=e.pageX, old_y=e.pageY; 
 e.preventDefault();
-render();
+controls_render();
 };
 
 //da usarsi senza animazione
@@ -526,7 +526,7 @@ function update(time){
     }
     lastFrameTime = time; // remember the time of the rendered frame
     // render the frame
-    render();
+    controls_render();
     window.requestAnimationFrame(update); // get next frame
 }
 
