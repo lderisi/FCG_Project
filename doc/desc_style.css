@@ -1,0 +1,15 @@
+html{
+    background-color: lightcyan;
+}
+h1 {
+    
+    display: flex;
+    justify-content: center;
+    color:blue;
+}
+
+
+body{
+    font-family: sans-serif;
+    font-size: 18px;
+}
