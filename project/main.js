@@ -73,23 +73,23 @@ async function main() {
 
   // ------- LOAD OBJ MODELS ------ //
   // TRUCK MODEL
-  const parts = load_obj(gl,'data/truck_de_risi.obj');
+  const parts = await load_obj(gl,'data/truck_de_risi.obj');
 
   // FOUNTAIN MODEL
-  const parts_tv = load_obj(gl,'data/Fountain.obj',false);
+  const parts_tv = await load_obj(gl,'data/Fountain.obj',false);
 
   //BUILDING 1
-  const parts_build = load_obj (gl,'data/building2.obj',false);
+  const parts_build = await load_obj (gl,'data/building2.obj',false);
 
   //BUILDING 2
-  const parts_build1 = load_obj(gl,'data/building.obj',false);
+  const parts_build1 = await load_obj(gl,'data/building.obj',false);
     
   //BUILDING 3
-  const parts_build3 = load_obj(gl,'data/building.obj',false);
+  const parts_build3 = await load_obj(gl,'data/building.obj',false);
 
   // OTHER SCENE OBJECTS
   // TREE MODEL
-  const parts_tree = load_obj(gl,'data/pino.obj',false);
+  const parts_tree = await load_obj(gl,'data/pino.obj',false);
   
 
    //UNIFORMS
@@ -346,7 +346,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
     webglUtils.setUniforms(programInfo, fountainUniforms);
     for (const {bufferInfo, material} of parts_tv) {
       webglUtils.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-      webglUtils.setUniforms(programInfo, materials_tv);
+      webglUtils.setUniforms(programInfo, material);
       webglUtils.drawBufferInfo(gl, bufferInfo);
     }
 
@@ -354,7 +354,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
         webglUtils.setUniforms(programInfo, buildingUniforms);
         for (const {bufferInfo, material} of parts_build) {
           webglUtils.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-          webglUtils.setUniforms(programInfo, materials_build);
+          webglUtils.setUniforms(programInfo, material);
           webglUtils.drawBufferInfo(gl, bufferInfo);
         }
 
@@ -362,7 +362,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
         webglUtils.setUniforms(programInfo, buildingUniforms1);
         for (const {bufferInfo, material} of parts_build1) {
             webglUtils.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-            webglUtils.setUniforms(programInfo, materials_build1);
+            webglUtils.setUniforms(programInfo, material);
             webglUtils.drawBufferInfo(gl, bufferInfo);
            }
 
@@ -370,14 +370,14 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
         webglUtils.setUniforms(programInfo, buildingUniforms3);
         for (const {bufferInfo, material} of parts_build3) {
             webglUtils.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-            webglUtils.setUniforms(programInfo, materials_build3);
+            webglUtils.setUniforms(programInfo, material);
             webglUtils.drawBufferInfo(gl, bufferInfo);
            }
     //Draw Tree
         webglUtils.setUniforms(programInfo, treeUniforms);
         for (const {bufferInfo, material} of parts_tree) {
             webglUtils.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-            webglUtils.setUniforms(programInfo, materials_tree);
+            webglUtils.setUniforms(programInfo, material);
             webglUtils.drawBufferInfo(gl, bufferInfo);
            }
 
