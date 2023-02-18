@@ -72,236 +72,25 @@ async function main() {
 
 
   // ------- LOAD OBJ MODELS ------ //
-
-
   // TRUCK MODEL
-
-  const objHref = 'data/truck_de_risi.obj';  
-  const response = await fetch(objHref);
-  const text = await response.text();
-  const obj = parseOBJ(text);
-  const baseHref = new URL(objHref, window.location.href);
-  const matTexts = await Promise.all(obj.materialLibs.map(async filename => {
-    const matHref = new URL(filename, baseHref).href;
-    const response = await fetch(matHref);
-    return await response.text();
-  }));
-  const materials = parseMTL(matTexts.join('\n'));
-
-  const textures = {
-    defaultWhite: create1PixelTexture(gl, [255, 255, 255, 255]),
-  };
-
-  for (const material of Object.values(materials)) {
-    Object.entries(material)
-      .filter(([key]) => key.endsWith('Map'))
-      .forEach(([key, filename]) => {
-        let texture = textures[filename];
-        if (!texture) {
-          const textureHref = new URL(filename, baseHref).href;
-          texture = createTexture(gl, textureHref);
-          textures[filename] = texture;
-        }
-        material[key] = texture;
-      });
-  }
-
-  const defaultMaterial = {
-    diffuse: [1, 1, 1],
-    diffuseMap: textures.defaultWhite,
-    ambient: [0, 0, 0],
-    specular: [1, 1, 1],
-    shininess: 400,
-    opacity: 1,
-  };
-
-  const parts = obj.geometries.map(({material, data}) => {
-    if (data.color) {
-      if (data.position.length === data.color.length) {
-        data.color = { numComponents: 3, data: data.color };
-      }
-    } else {
-      data.color = { value: [1, 1, 1, 1] };
-    }
-    const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
-    return {
-      material: {
-        ...defaultMaterial,
-        ...materials[material],
-      },
-      bufferInfo,
-    };
-  });
-
-  
+  const parts = load_obj(gl,'data/truck_de_risi.obj');
 
   // FOUNTAIN MODEL
-  const objHref_tv = 'data/Fountain.obj';  
-  const response_tv = await fetch(objHref_tv);
-  const text_tv = await response_tv.text();
-  const obj_tv = parseOBJ(text_tv);
-  const baseHref_tv = new URL(objHref_tv, window.location.href);
-  const matTexts_tv = await Promise.all(obj.materialLibs.map(async filename => {
-    const matHref_tv = new URL(filename, baseHref_tv).href;
-    const response_tv = await fetch(matHref_tv);
-    return await response_tv.text();
-  }));
-  const materials_tv = parseMTL(matTexts_tv.join('\n'));
-
-  const parts_tv = obj_tv.geometries.map(({material, data}) => {
-    
-
-    if (data.color) {
-      if (data.position.length === data.color.length) {
-        data.color = { numComponents: 3, data: data.color };
-      }
-    } else {
-      data.color = { value: [1, 1, 1, 1] };
-    }
-    const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
-    return {
-      material: {
-        ...defaultMaterial,
-        ...materials_tv[material],
-      },
-      bufferInfo,
-    };
-  });
-
+  const parts_tv = load_obj(gl,'data/Fountain.obj',false);
 
   //BUILDING 1
-  const objHref_build = 'data/building2.obj';  
-  const response_build = await fetch(objHref_build);
-  const text_build = await response_build.text();
-  const obj_build = parseOBJ(text_build);
-  const baseHref_build = new URL(objHref_build, window.location.href);
-  const matTexts_build = await Promise.all(obj.materialLibs.map(async filename => {
-    const matHref_build = new URL(filename, baseHref_build).href;
-    const response_build = await fetch(matHref_build);
-    return await response_build.text();
-  }));
-  const materials_build = parseMTL(matTexts_build.join('\n'));
-
-  const parts_build = obj_build.geometries.map(({material, data}) => {
-    
-
-    if (data.color) {
-      if (data.position.length === data.color.length) {
-        data.color = { numComponents: 3, data: data.color };
-      }
-    } else {
-      data.color = { value: [1, 1, 1, 1] };
-    }
-    const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
-    return {
-      material: {
-        ...defaultMaterial,
-        ...materials_build[material],
-      },
-      bufferInfo,
-    };
-  });
+  const parts_build = load_obj (gl,'data/building2.obj',false);
 
   //BUILDING 2
-  const objHref_build1 = 'data/building.obj';  
-  const response_build1 = await fetch(objHref_build1);
-  const text_build1 = await response_build1.text();
-  const obj_build1 = parseOBJ(text_build1);
-  const baseHref_build1 = new URL(objHref_build1, window.location.href);
-  const matTexts_build1 = await Promise.all(obj.materialLibs.map(async filename => {
-    const matHref_build1 = new URL(filename, baseHref_build1).href;
-    const response_build1 = await fetch(matHref_build1);
-    return await response_build1.text();
-  }));
-  const materials_build1 = parseMTL(matTexts_build1.join('\n'));
-
-  const parts_build1 = obj_build1.geometries.map(({material, data}) => {
+  const parts_build1 = load_obj(gl,'data/building.obj',false);
     
-
-    if (data.color) {
-      if (data.position.length === data.color.length) {
-        data.color = { numComponents: 3, data: data.color };
-      }
-    } else {
-      data.color = { value: [1, 1, 1, 1] };
-    }
-    const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
-    return {
-      material: {
-        ...defaultMaterial,
-        ...materials_build1[material],
-      },
-      bufferInfo,
-    };
-  });
-
-//BUILDING 3
-const objHref_build3 = 'data/building.obj';  
-const response_build3 = await fetch(objHref_build3);
-const text_build3 = await response_build3.text();
-const obj_build3 = parseOBJ(text_build3);
-const baseHref_build3 = new URL(objHref_build3, window.location.href);
-const matTexts_build3 = await Promise.all(obj.materialLibs.map(async filename => {
-  const matHref_build3 = new URL(filename, baseHref_build3).href;
-  const response_build3 = await fetch(matHref_build3);
-  return await response_build3.text();
-}));
-const materials_build3 = parseMTL(matTexts_build1.join('\n'));
-
-const parts_build3 = obj_build3.geometries.map(({material, data}) => {
-  
-
-  if (data.color) {
-    if (data.position.length === data.color.length) {
-      data.color = { numComponents: 3, data: data.color };
-    }
-  } else {
-    data.color = { value: [1, 1, 1, 1] };
-  }
-  const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
-  return {
-    material: {
-      ...defaultMaterial,
-      ...materials_build3[material],
-    },
-    bufferInfo,
-  };
-});
+  //BUILDING 3
+  const parts_build3 = load_obj(gl,'data/building.obj',false);
 
   // OTHER SCENE OBJECTS
-
-// TREE MODEL
-const objHref_tree = 'data/pino.obj';  
-const response_tree = await fetch(objHref_tree);
-const text_tree = await response_tree.text();
-const obj_tree = parseOBJ(text_tree);
-const baseHref_tree = new URL(objHref_tree, window.location.href);
-const matTexts_tree = await Promise.all(obj.materialLibs.map(async filename => {
-  const matHref_tree = new URL(filename, baseHref_tree).href;
-  const response_tree = await fetch(matHref_tree);
-  return await response_tree.text();
-}));
-const materials_tree = parseMTL(matTexts_tree.join('\n'));
-
-const parts_tree = obj_tree.geometries.map(({material, data}) => {
+  // TREE MODEL
+  const parts_tree = load_obj(gl,'data/pino.obj',false);
   
-
-  if (data.color) {
-    if (data.position.length === data.color.length) {
-      data.color = { numComponents: 3, data: data.color };
-    }
-  } else {
-    data.color = { value: [1, 1, 1, 1] };
-  }
-  const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
-  return {
-    material: {
-      ...defaultMaterial,
-      ...materials_tree[material],
-    },
-    bufferInfo,
-  };
-});
 
    //UNIFORMS
    const ceilingUniforms = {
