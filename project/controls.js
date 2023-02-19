@@ -72,14 +72,16 @@ function define_gui() {
   canvas.onwheel = function(event) {
     if (event.deltaY > 0) {
       // down
+      if(settings.D < 100){
       settings.D += 1;
       controls_render();      
-    } else {
+    }} else {
       // up
+      if(settings.D > 4){
       settings.D -= 1;
       controls_render();
     }
-  }
+  }}
 
 
   let clicked = false;
@@ -101,13 +103,13 @@ canvas.addEventListener('mousedown', e => {
     //settings.shadows = true;
     controls_render();
 }
-
-/*
-if(e.which === 4){
-  if(settings.shadows = true){
-  THETA = degToRad(100), PHI = degToRad(500);
-  render();
-}}*/
+  /*
+  if(e.which === 4){
+    if(settings.shadows = true){
+    THETA = degToRad(100), PHI = degToRad(500);
+    render();
+  }}
+  */
  
 
   if (e.which === 2 && !clicked) {
@@ -115,36 +117,29 @@ if(e.which === 4){
     // Do something when the user does middle click
     alert('Keypad on')
     window.addEventListener("keydown", function (event) {
-      /*
+      
       //W
       if(event.keyCode == 87){
-        if(settings.dz>=-21.5){
-          settings.dz -= 1;
-          render();
-      }
+        THETA = degToRad(0), PHI = degToRad(50);
+        controls_render();
       }
       //S
       if(event.keyCode == 83){
-        if(settings.dz>=-22){
-          settings.dz += 1;
-          render();
-      }
+        THETA = degToRad(360), PHI = degToRad(-50);
+        controls_render();
       }
       //A
       if(event.keyCode == 65){
-        if(settings.dx>=-21.5){
-          settings.dx -= 1;
-          render();
-      }
+        THETA = degToRad(90), PHI = degToRad(-50);
+        controls_render();
       }
       //D
       if(event.keyCode == 68){
-        if(settings.dx>-21.5){
-          settings.dx += 1;
-          render();
+        THETA = degToRad(270), PHI = degToRad(-50);
+        controls_render();
       }
-      }
-    */
+      
+    
         if (event.defaultPrevented) {
             return;
         }

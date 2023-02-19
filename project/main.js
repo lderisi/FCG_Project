@@ -90,15 +90,14 @@ async function main() {
   const parts_build3 = await load_obj(gl,'data/building.obj',false);
 
   // OTHER SCENE OBJECTS
-
-  
   // TREE MODEL
   const parts_tree = await load_obj(gl,'data/pino.obj',false);
   
 
-  //UNIFORMS
-   const ceilingUniforms = createUniform(null,null,txt[BRICKS2],m4.scale(m4.xRotate(m4.translation(0, 50, 0),3.14159),5,5,5));
-   const floorUniforms = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[WOOD],m4.scale(m4.translation(0,0,0),5,5,5))
+  // ------ UNIFORMS ------ //
+  const ceilingUniforms = createUniform(null,null,txt[BRICKS2],m4.scale(m4.xRotate(m4.translation(0, 50, 0),3.14159),5,5,5));
+  
+  const floorUniforms = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[WOOD],m4.scale(m4.translation(0,0,0),5,5,5))
 
   //FRONT
   const wallUniforms1 = createUniform([1, 0.5, 1, 1],[1, 1, 1, 1],txt[BRICKS],m4.scale(m4.xRotate(m4.translation(0, 25, 25),-1.5708),5,5,5))
@@ -126,7 +125,6 @@ async function main() {
 
 
   // SOME BASE AND SHADOWS SETTINGS
-
   const depthTexture = gl.createTexture();
   const depthTextureSize = 512;
   gl.bindTexture(gl.TEXTURE_2D, depthTexture);
