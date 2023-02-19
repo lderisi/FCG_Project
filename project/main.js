@@ -340,7 +340,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
     
     const cameraMatrix = m4.lookAt(camera, target, up) ;
     truckUniforms = {
-      u_world: m4.scale(m4.zRotate(m4.xRotate(m4.translation(settings.dx, -0.05, settings.dz),-1.57),angle),0.7,0.7,0.7),
+      u_world: m4.scale(m4.zRotate(m4.xRotate(m4.translation(settings.dx, -0.05, settings.dz),-1.57),angle),settings.scaleX,settings.scaleY,settings.scaleZ),
     };
     
     if(settings.shadows){

@@ -36,6 +36,9 @@ const settings = {
     lightFrustum: false,
     dx: 0,
     dz: 0.4,
+    scaleX:0.7,
+    scaleY:0.7,
+    scaleZ:0.7,
     shadows: false,
   };
   

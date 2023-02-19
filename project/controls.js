@@ -34,6 +34,12 @@ function define_gui() {
       controls_render();});
     gui.add(settings,"dz").min(-23).max(23).step(0.1).onChange(function() {
       controls_render();});
+    gui.add(settings,"scaleX").min(0.1).max(6).step(0.1).onChange(function() {
+        controls_render();});
+    gui.add(settings,"scaleY").min(0.1).max(6).step(0.1).onChange(function() {
+        controls_render();});
+    gui.add(settings,"scaleZ").min(0.1).max(6).step(0.1).onChange(function() {
+        controls_render();});
     gui.add(settings,"spotLight").onChange(function() {
       controls_render();});
     gui.add(settings,"lightFrustum").onChange(function() {
