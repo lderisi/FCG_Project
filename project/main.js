@@ -92,6 +92,8 @@ async function main() {
   // OTHER SCENE OBJECTS
   // TREE MODEL
   const parts_tree = await load_obj(gl,'data/pino.obj',false);
+
+  const parts_dumpster = await load_obj(gl,'data/dumpster_finale.obj',false);
   
 
   // ------ UNIFORMS ------ //
@@ -123,6 +125,9 @@ async function main() {
 
   const treeUniforms = createDiffuseUniform(m4.scale(m4.xRotate(m4.translation(22, 0, -12),degToRad(-90)),1,1,1),txt[TREE])
 
+  areaTrashInit();
+
+  let dumpsterUniforms = createDiffuseUniform (m4.translation(pxTrash, pyTrash, pzTrash),txt[BUILD])
 
   // SOME BASE AND SHADOWS SETTINGS
   const depthTexture = gl.createTexture();
@@ -225,6 +230,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
 }
 
 
+
   function drawScene(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatrix,programInfo) {
 
     const viewMatrix = m4.inverse(cameraMatrix);
@@ -259,7 +265,6 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
       webglUtils.setUniforms(programInfo, material);
       webglUtils.drawBufferInfo(gl, bufferInfo);
     }
-
 
     // ----- Draw Fountain ----
     webglUtils.setUniforms(programInfo, fountainUniforms);
@@ -300,35 +305,18 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
             webglUtils.drawBufferInfo(gl, bufferInfo);
            }
 
+           
+    // ---- Draw Dumpster ----
+    webglUtils.setUniforms(programInfo, dumpsterUniforms);
+    for (const {bufferInfo, material} of parts_dumpster) {
+      webglUtils.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+      webglUtils.setUniforms(programInfo, material);
+      webglUtils.drawBufferInfo(gl, bufferInfo);
+    }
   }
 
 ///////////////////////////////////  GAME LOGIC  ///////////////////////////////////
-
 /*
-  drawCollectArea();
-  drawDumpster(programInfo);
-
-  function drawDumpster(programInfo) {
-	
-    if (!endGame) {
-      var objToDraw = getObjToDraw(objectsToDraw, "cassonetto");
-    
-      if (!collectTrash[collectedTrash-1]) { //cassonetto ritirato
-        matrix_cassonetto = m4.copy(u_world);
-        objToDraw.uniforms.u_world = matrix_cassonetto;
-      }
-      else if (collectTrash[collectedTrash-1]) { //cassonetto ritirato nell'area di consegna
-        matrix_cassonetto = m4.identity();
-        matrix_cassonetto = m4.translate(matrix_cassonetto, pxTrash, pyTrash+0.5, pzTrash);
-        matrix_cassonetto = m4.scale(matrix_cassonetto, 2, .3, 2);
-        objToDraw.uniforms.u_world = matrix_cassonetto;
-      }
-    
-      webglUtils.setBuffersAndAttributes(gl, programInfo, objToDraw.bufferInfo);
-      webglUtils.setUniforms(programInfo, objToDraw.uniforms);
-      webglUtils.drawBufferInfo(gl, objToDraw.bufferInfo);
-    }
-  }
 
   function drawCollectArea() {
 	
@@ -363,10 +351,10 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
       webglUtils.drawBufferInfo(gl, objToDraw.bufferInfo);
 
       }
-*/
+
 
                         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+*/
 
   function render() {
     webglUtils.resizeCanvasToDisplaySize(gl.canvas);
@@ -404,9 +392,11 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
     
     const cameraMatrix = m4.lookAt(camera, target, up) ;
     truckUniforms = {
-      u_world: m4.scale(m4.zRotate(m4.xRotate(m4.translation(settings.dx, -0.05, settings.dz),-1.57),angle),settings.scaleX,settings.scaleY,settings.scaleZ),
-    };
-    
+      u_world : m4.scale(m4.zRotate(m4.xRotate(m4.translation(settings.dx, -0.05, settings.dz),-1.57),angle),settings.scaleX,settings.scaleY,settings.scaleZ),
+    }
+
+    dumpsterUniforms.u_world = m4.translation(pxTrash,pyTrash,pzTrash)
+
     if(settings.shadows){
       drawScene(lightProjectionMatrix,lightWorldMatrix,m4.identity(),lightWorldMatrix,colorProgramInfo);
     }

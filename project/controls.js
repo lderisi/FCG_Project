@@ -78,10 +78,11 @@ function define_gui() {
   canvas.onwheel = function(event) {
     if (event.deltaY > 0) {
       // down
-      if(settings.D < 100){
+      //if(settings.D < 100){
       settings.D += 1;
       controls_render();      
-    }} else {
+    //}
+  } else {
       // up
       if(settings.D > 4){
       settings.D -= 1;
@@ -124,6 +125,15 @@ canvas.addEventListener('mousedown', e => {
     alert('Keypad on')
     window.addEventListener("keydown", function (event) {
       
+      if(event.keyCode == 32){
+        console.log("Barra spaziatrice");
+        console.log(Math.abs(settings.dx-pxTrash),Math.abs(settings.dz-pzTrash));
+      if(Math.abs(settings.dx-pxTrash) < 2 && Math.abs(settings.dz-pzTrash) < 2){
+        console.log("Raccolgo");
+        pickTrash();
+      }
+      }
+
       //W
       if(event.keyCode == 87){
         THETA = degToRad(0), PHI = degToRad(50);
@@ -153,7 +163,7 @@ canvas.addEventListener('mousedown', e => {
         switch (event.key) {
           case "ArrowLeft": 
             if(settings.dz>=-21.5){
-            angle += degToRad(2);
+            angle += degToRad(3.5);
               controls_render();
               }
               break;
@@ -168,7 +178,7 @@ canvas.addEventListener('mousedown', e => {
               break;
           case "ArrowRight":
               if(settings.dz>=-21.5){
-              angle -= degToRad(2);
+              angle -= degToRad(3.5);
               controls_render();
               }
               break;
@@ -218,5 +228,49 @@ canvas.addEventListener("touchmove", function (e) {
   }
 
   function checkPosition(dx, dz) {
-    return dx <= 21.5 && dx >= -21.5 && dz <= 21.5 && dz >= -21.5
-  }
+    console.log(dx,dz);
+  if (!(dx <= 21.5 && dx >= -21.5 && dz <= 21.5 && dz >= -21.5)){
+    return false;
+  } 
+
+      //not under fountain
+      if ((dx >= 10 ) && (dx <= 14)) {
+        if ((dz <= 12) && (dz >= 16)) {
+          console.log("under fountain");	
+          return false;
+        }
+      }
+      
+      //not under building 1 
+      if ((dx >= 19) && (dx <= 23)) {
+        if ((dz <= 18) && (dz >= 22)) {
+          console.log("under building 1");	
+          return false;
+        }
+      }
+      
+      //not under building 2 
+      if ((dx >= -24) && (dx <= -15)) {
+        if ((dz <= 23) && (dz >= 13)) {
+          console.log("under building 2");	
+          return false;
+        }
+      }
+      
+      //not under building 3 
+      if ((dx >= 0) && (dx <= -18)) {
+        if ((dz <= -19.5) && (dz >= -4.6)) {
+          console.log("under building 3");	
+          return false;
+        }
+      }
+      
+      //not under the tree
+      if ((dx >= 22) && (dx <= 24)) {
+        if ((dz <= -7) && (dz >= -15)) {
+          console.log("under tree");	
+          return false;
+        }
+      }
+        return true;
+    }
