@@ -302,10 +302,75 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
 
   }
 
+///////////////////////////////////  GAME LOGIC  ///////////////////////////////////
+
+/*
+  drawCollectArea();
+  drawDumpster(programInfo);
+
+  function drawDumpster(programInfo) {
+	
+    if (!endGame) {
+      var objToDraw = getObjToDraw(objectsToDraw, "cassonetto");
+    
+      if (!collectTrash[collectedTrash-1]) { //cassonetto ritirato
+        matrix_cassonetto = m4.copy(u_world);
+        objToDraw.uniforms.u_world = matrix_cassonetto;
+      }
+      else if (collectTrash[collectedTrash-1]) { //cassonetto ritirato nell'area di consegna
+        matrix_cassonetto = m4.identity();
+        matrix_cassonetto = m4.translate(matrix_cassonetto, pxTrash, pyTrash+0.5, pzTrash);
+        matrix_cassonetto = m4.scale(matrix_cassonetto, 2, .3, 2);
+        objToDraw.uniforms.u_world = matrix_cassonetto;
+      }
+    
+      webglUtils.setBuffersAndAttributes(gl, programInfo, objToDraw.bufferInfo);
+      webglUtils.setUniforms(programInfo, objToDraw.uniforms);
+      webglUtils.drawBufferInfo(gl, objToDraw.bufferInfo);
+    }
+  }
+
+  function drawCollectArea() {
+	
+    if (!endGame) {
+      const viewMatrix = m4.inverse(cameraMatrix);
+      
+      let objToDraw = getObjToDraw(objectsToDraw, "collectArea");
+      const programInfo = objToDraw.programInfo;
+      gl.useProgram(programInfo.program);
+      
+      let matrix = m4.identity();
+      
+      matrix = m4.translate(matrix, pxCollection, 0.1, pzCollection); //QUI
+      matrix = m4.scale(matrix, 2, 2, 2);
+      objToDraw.uniforms.u_world = matrix;
+      
+      webglUtils.setBuffersAndAttributes(gl, programInfo, objToDraw.bufferInfo);
+      
+      webglUtils.setUniforms(programInfo, objToDraw.uniforms);
+      
+      webglUtils.setUniforms(programInfo, {
+        u_view: viewMatrix,
+        u_projection: projectionMatrix,
+        u_world: matrix,
+      });
+      
+      if (insideArea) //cambia colore in verde
+        webglUtils.setUniforms(programInfo, {
+          u_color: [0,1,0,1],
+        });
+      
+      webglUtils.drawBufferInfo(gl, objToDraw.bufferInfo);
+
+      }
+*/
+
+                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
   function render() {
     webglUtils.resizeCanvasToDisplaySize(gl.canvas);
-
+    
     gl.enable(gl.CULL_FACE);
     gl.enable(gl.DEPTH_TEST);
 
@@ -327,7 +392,6 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
              settings.projHeight / 2,  
              1,                      
              15);    
-                    
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, depthFramebuffer);
     gl.viewport(0, 0, depthTextureSize, depthTextureSize);
