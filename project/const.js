@@ -1,18 +1,20 @@
 //TEXTURES
-const WOOD = 0;
-const PATH_WOOD = 'textures/mappa.jpg';
-const BRICKS = 1;
-const PATH_BRICKS = 'textures/cielo.jpg';
-const BRICKS2 = 2;
-const PATH_BRICKS2 = 'textures/luca.PNG';
-const WINDOW = 3;
-const PATH_WINDOW = 'textures/galss.jpg';
-const TV = 4;
+const MAP = 0;
+const PATH_MAP = 'textures/mappa.jpg';
+const SKY = 1;
+const PATH_SKY = 'textures/cielo.jpg';
+const LUCA = 2;
+const PATH_LUCA = 'textures/luca.PNG';
+const GLASS = 3;
+const PATH_GLASS = 'textures/glass.jpg';
+const ACQUA = 4;
 const PATH_TV = 'textures/acqua.jpg';
 const BUILD = 5;
 const PATH_BUILD = 'textures/gray.jpg';
 const TREE = 6;
 const PATH_TREE = 'textures/tree.jpg';
+const DUMPSTER = 7;
+const PATH_DUMPSTER = 'textures/yellow.jpg';
 const txt = [];
 
 // CAMERA FIELD OF VIEW
@@ -36,9 +38,9 @@ const settings = {
     lightFrustum: false,
     dx: 0,
     dz: 0.4,
-    scaleX:0.7,
-    scaleY:0.7,
-    scaleZ:0.7,
+    scaleX:1.2,
+    scaleY:1.2,
+    scaleZ:1.2,
     shadows: false,
   };
   

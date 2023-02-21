@@ -46,40 +46,40 @@ function areaTrashInit(){
 
 function checkIfUnderBuildings() {
 	//not under fountain
-	if ((dx >= 10 ) && (dx <= 14)) {
-		if ((dz <= 12) && (dz >= 16)) {
+	if ((dx >= 8 ) && (dx <= 16)) {
+		if ((dz <= 10) && (dz >= 18)) {
 			console.log("under fountain");	
 			return false;
 		}
 	}
 	
 	//not under building 1 
-	if ((dx >= 19) && (dx <= 23)) {
-		if ((dz <= 18) && (dz >= 22)) {
+	if ((dx >= 17) && (dx <= 25)) {
+		if ((dz <= 16) && (dz >= 24)) {
 			console.log("under building 5");	
 			return false;
 		}
 	}
 	
 	//not under building 2 
-	if ((dx >= -24) && (dx <= -15)) {
-		if ((dz <= 23) && (dz >= 13)) {
+	if ((dx >= -26) && (dx <= -13)) {
+		if ((dz <= 21) && (dz >= 15)) {
 			console.log("under building 4");	
 			return false;
 		}
 	}
 	
 	//not under building 3 
-	if ((dx >= 0) && (dx <= -18)) {
-		if ((dz <= -19.5) && (dz >= -4.6)) {
+	if ((dx >= 2) && (dx <= -20)) {
+		if ((dz <= -21.5) && (dz >= -6.6)) {
 			console.log("under building 3");	
 			return false;
 		}
 	}
 	
 	//not under the tree
-	if ((dx >= 22) && (dx <= 24)) {
-		if ((dz <= -7) && (dz >= -15)) {
+	if ((dx >= 20) && (dx <= 26)) {
+		if ((dz <= -9) && (dz >= -17)) {
 			console.log("under tree");	
 			return false;
 		}

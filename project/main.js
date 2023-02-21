@@ -24,13 +24,15 @@ async function main() {
   const universeProgramInfo = webglUtils.createProgramInfo(gl, ['universe-vs', 'universe-fs']);
 
  
-  txt[0] = textureFromImage(gl, PATH_WOOD);
-  txt[1] = textureFromImage(gl, PATH_BRICKS);
-  txt[2] = textureFromImage(gl, PATH_BRICKS2);
-  txt[3] = textureFromImage(gl, PATH_WINDOW);
+  txt[0] = textureFromImage(gl, PATH_MAP);
+  txt[1] = textureFromImage(gl, PATH_SKY);
+  txt[2] = textureFromImage(gl, PATH_LUCA);
+  txt[3] = textureFromImage(gl, PATH_GLASS);
   txt[4] = textureFromImage(gl, PATH_TV);
   txt[5] = textureFromImage(gl, PATH_BUILD);
   txt[6] = textureFromImage(gl, PATH_TREE);
+  txt[7] = textureFromImage(gl, PATH_DUMPSTER);
+
  
 
   //await new Promise(r => setTimeout(r, 2000));
@@ -97,27 +99,27 @@ async function main() {
   
 
   // ------ UNIFORMS ------ //
-  const ceilingUniforms = createUniform(null,null,txt[BRICKS2],m4.scale(m4.xRotate(m4.translation(0, 50, 0),3.14159),5,5,5));
+  const ceilingUniforms = createUniform(null,null,txt[LUCA],m4.scale(m4.xRotate(m4.translation(0, 50, 0),3.14159),5,5,5));
   
-  const floorUniforms = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[WOOD],m4.scale(m4.translation(0,0,0),5,5,5))
+  const floorUniforms = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[MAP],m4.scale(m4.translation(0,0,0),5,5,5))
 
   //FRONT
-  const wallUniforms1 = createUniform([1, 0.5, 1, 1],[1, 1, 1, 1],txt[BRICKS],m4.scale(m4.xRotate(m4.translation(0, 25, 25),-1.5708),5,5,5))
+  const wallUniforms1 = createUniform([1, 0.5, 1, 1],[1, 1, 1, 1],txt[SKY],m4.scale(m4.xRotate(m4.translation(0, 25, 25),-1.5708),5,5,5))
 
   //SX
-  const wallUniforms2 = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[BRICKS],m4.scale(m4.yRotate(m4.zRotate(m4.translation(25, 25, 0),degToRad(90)),degToRad(90)),5,5,5)) 
+  const wallUniforms2 = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[SKY],m4.scale(m4.yRotate(m4.zRotate(m4.translation(25, 25, 0),degToRad(90)),degToRad(90)),5,5,5)) 
  
   //DX
-  const wallUniforms3 = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[BRICKS],m4.scale(m4.yRotate(m4.zRotate(m4.translation(-25, 25, 0),degToRad(-90)),degToRad(-90)),5,5,5)) 
+  const wallUniforms3 = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[SKY],m4.scale(m4.yRotate(m4.zRotate(m4.translation(-25, 25, 0),degToRad(-90)),degToRad(-90)),5,5,5)) 
  
   //BACK
-  const wallUniforms4 = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[BRICKS],m4.scale(m4.yRotate(m4.xRotate(m4.translation(0, 25, -25),degToRad(90)),degToRad(180)),5,5,5))
+  const wallUniforms4 = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[SKY],m4.scale(m4.yRotate(m4.xRotate(m4.translation(0, 25, -25),degToRad(90)),degToRad(180)),5,5,5))
 
   var truckUniforms = createUniform(null,null,null,m4.yRotate(m4.translation(0, 0, 0),3.1415))
   
-  const fountainUniforms = createDiffuseUniform(m4.scale(m4.yRotate(m4.translation(11.7, 2.2, 15.5),3.1415),1.5,1.5,1.5),txt[TV])
+  const fountainUniforms = createDiffuseUniform(m4.scale(m4.yRotate(m4.translation(11.7, 2.2, 15.5),3.1415),1.5,1.5,1.5),txt[ACQUA])
 
-  const buildingUniforms = createDiffuseUniform(m4.scale(m4.yRotate(m4.translation(-9, 0, -11.8),degToRad(90)),1.5,2.5,1.5),txt[WINDOW])
+  const buildingUniforms = createDiffuseUniform(m4.scale(m4.yRotate(m4.translation(-9, 0, -11.8),degToRad(90)),1.5,2.5,1.5),txt[GLASS])
   
   const buildingUniforms1 = createDiffuseUniform(m4.scale(m4.yRotate(m4.translation(-20, 0, 20),3.1415),0.04,0.04,0.04),txt[BUILD]) 
   
@@ -127,7 +129,7 @@ async function main() {
 
   areaTrashInit();
 
-  let dumpsterUniforms = createDiffuseUniform (m4.translation(pxTrash, pyTrash, pzTrash),txt[BUILD])
+  let dumpsterUniforms = createDiffuseUniform (m4.translation(pxTrash, pyTrash, pzTrash),txt[DUMPSTER])
 
   // SOME BASE AND SHADOWS SETTINGS
   const depthTexture = gl.createTexture();
@@ -395,7 +397,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
       u_world : m4.scale(m4.zRotate(m4.xRotate(m4.translation(settings.dx, -0.05, settings.dz),-1.57),angle),settings.scaleX,settings.scaleY,settings.scaleZ),
     }
 
-    dumpsterUniforms.u_world = m4.translation(pxTrash,pyTrash,pzTrash)
+    dumpsterUniforms.u_world = m4.scale(m4.zRotate(m4.xRotate(m4.translation(pxTrash, pyTrash, pzTrash),0),0),2.5,2.5,2.5)
 
     if(settings.shadows){
       drawScene(lightProjectionMatrix,lightWorldMatrix,m4.identity(),lightWorldMatrix,colorProgramInfo);
@@ -407,6 +409,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.clearColor(0, 0, 0, 1);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    
 
     let textureMatrix = m4.identity();
     textureMatrix = m4.translate(textureMatrix, 0.5, 0.5, 0.5);
