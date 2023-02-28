@@ -233,7 +233,7 @@ canvas.addEventListener("touchmove", function (e) {
     return false;
   } 
 
-      	//not under fountain
+      	//collision fountain
 	if ((dx >= 8 ) && (dx <= 16)) {
 		if ((dz <= 10) && (dz >= 18)) {
 			console.log("under fountain");	
@@ -241,7 +241,7 @@ canvas.addEventListener("touchmove", function (e) {
 		}
 	}
 	
-	//not under building 1 
+	//collision building 1 
 	if ((dx >= 17) && (dx <= 25)) {
 		if ((dz <= 16) && (dz >= 24)) {
 			console.log("under building 5");	
@@ -249,7 +249,7 @@ canvas.addEventListener("touchmove", function (e) {
 		}
 	}
 	
-	//not under building 2 
+	//collision building 2 
 	if ((dx >= -26) && (dx <= -13)) {
 		if ((dz <= 21) && (dz >= 15)) {
 			console.log("under building 4");	
@@ -257,7 +257,7 @@ canvas.addEventListener("touchmove", function (e) {
 		}
 	}
 	
-	//not under building 3 
+	//collision building 3 
 	if ((dx >= 2) && (dx <= -20)) {
 		if ((dz <= -21.5) && (dz >= -6.6)) {
 			console.log("under building 3");	
@@ -265,7 +265,7 @@ canvas.addEventListener("touchmove", function (e) {
 		}
 	}
 	
-	//not under the tree
+	//collision  tree
 	if ((dx >= 20) && (dx <= 26)) {
 		if ((dz <= -9) && (dz >= -17)) {
 			console.log("under tree");	
