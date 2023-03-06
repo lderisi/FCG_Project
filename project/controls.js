@@ -46,12 +46,13 @@ function define_gui() {
       controls_render();});
     gui.add(settings,"shadows").onChange(function() {
       controls_render();});
-
+    gui.add(settings,"firstCamera").onChange(function() {
+      controls_render();});
     gui.close();
   } 
 
 
-  var THETA = degToRad(10), PHI = degToRad(50);
+  var THETA = degToRad(90), PHI = degToRad(60);
   var drag, old_x, old_y, dX, dY;
   
   function attachEvents() {
@@ -138,6 +139,7 @@ canvas.addEventListener('mousedown', e => {
       if(event.keyCode == 87){
         THETA = degToRad(0), PHI = degToRad(50);
         controls_render();
+        
       }
       //S
       if(event.keyCode == 83){
@@ -159,6 +161,7 @@ canvas.addEventListener('mousedown', e => {
         if (event.defaultPrevented) {
             return;
         }
+
         let newDx, newDz
         switch (event.key) {
           case "ArrowLeft": 
@@ -201,6 +204,7 @@ canvas.addEventListener('mousedown', e => {
   }
 })
 
+
 canvas.addEventListener("touchstart", function (e) {
     drag = true;
     old_x =  e.touches[0].clientX;
@@ -225,7 +229,82 @@ canvas.addEventListener("touchmove", function (e) {
     e.preventDefault();
     controls_render();
 }, false);
+
   }
+if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+
+  document.getElementById("ButtonLeft").style.visibility = "hidden";
+  document.getElementById("ButtonUp").style.visibility = "hidden";
+  document.getElementById("ButtonDown").style.visibility = "hidden";
+  document.getElementById("ButtonRight").style.visibility = "hidden";
+  document.getElementById("ButtonPick").style.visibility = "hidden";
+
+  var pressed;
+  document.getElementById("ButtonUp").onclick = function(){pressed = "ButtonUp"};
+  document.getElementById("ButtonLeft").onclick = function(){
+          console.log("ciao");
+      };
+  document.getElementById("ButtonRight").onclick = function(){pressed = "ButtonRight"};
+  document.getElementById("ButtonDown").onclick = function(){pressed = "ButtonDown"};
+  document.getElementById("ButtonPick").onclick = function(){key[4]=true; pressed = "ButtonPick"};
+
+
+  //canvas.onmousedown = mouseDown;
+  canvas.onmouseup = mouseUp;
+  canvas.mouseout = mouseUp;
+  canvas.onmousemove = mouseMove;
+  window.addEventListener('touchstart');
+  window.addEventListener('touchend');
+
+}
+
+/*
+//*****************************************************************************************************************
+// MOBILE EVENTS
+//*****************************************************************************************************************
+
+function doTouchstart(e){
+console.log(e);
+if (pressed === "ButtonUp"){
+    key[0]=true;    // THE W KEY
+} 
+if (pressed === "ButtonDown"){
+    key[2]=true;    // THE S KEY  
+} 
+if (pressed === "ButtonLeft"){
+// THE A KEY   
+} 
+if (pressed === "ButtonRight"){
+    key[3]=true;    // THE D KEY  
+} 
+if (pressed === "ButtonPick"){
+pressedOnMobile = true;
+    key[4]=true;    // THE BAR SPACE	
+} 	
+}
+function doTouchend(e){
+if (pressed === "ButtonUp"){
+pressed = "";
+    key[0]=false;   // THE W KEY
+} 
+if (pressed === "ButtonDown"){
+pressed = "";
+    key[2]=false;   // THE S KEY    
+} 
+if (pressed === "ButtonLeft"){
+pressed = "";
+    key[1]=false;   // THE A KEY
+} 
+if (pressed === "ButtonRight"){
+pressed = "";
+    key[3]=false;   // THE D KEY    
+} 
+if (pressed === "ButtonPick"){
+pressed = "";
+    key[4]=false;    // THE BAR SPACE	
+}
+}
+*/
 
   function checkPosition(dx, dz) {
     console.log(dx,dz);
@@ -237,7 +316,7 @@ canvas.addEventListener("touchmove", function (e) {
 	if ((dx >= 8 ) && (dx <= 16)) {
 		if ((dz <= 10) && (dz >= 18)) {
 			console.log("under fountain");	
-			return false;
+			return true;
 		}
 	}
 	

@@ -354,12 +354,20 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
     var camera = [settings.D*Math.sin(PHI)*Math.cos(THETA), settings.D*Math.cos(PHI), settings.D*Math.sin(PHI)*Math.sin(THETA)];
     
     const cameraMatrix = m4.lookAt(camera, target, up) ;
+
+    
     truckUniforms = {
       u_world : m4.scale(m4.zRotate(m4.xRotate(m4.translation(settings.dx, -0.05, settings.dz),-1.57),angle),settings.scaleX,settings.scaleY,settings.scaleZ),
     }
 
     dumpsterUniforms.u_world = m4.scale(m4.zRotate(m4.xRotate(m4.translation(pxTrash, pyTrash, pzTrash),0),0),2.5,2.5,2.5)
 
+/*
+    if(settings.firstCamera){
+      THETA = degToRad(0), PHI = degToRad(0);
+      render();
+    }
+*/
     if(settings.shadows){
       drawScene(lightProjectionMatrix,lightWorldMatrix,m4.identity(),lightWorldMatrix,colorProgramInfo);
     }
