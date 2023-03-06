@@ -115,6 +115,7 @@ async function main() {
   //BACK
   const wallUniforms4 = createUniform([1, 1, 1, 1],[1, 1, 1, 1],txt[SKY],m4.scale(m4.yRotate(m4.xRotate(m4.translation(0, 25, -25),degToRad(90)),degToRad(180)),5,5,5))
 
+  //OTHER SCENE OBJECTS
   var truckUniforms = createUniform(null,null,null,m4.yRotate(m4.translation(0, 0, 0),3.1415))
   
   const fountainUniforms = createDiffuseUniform(m4.scale(m4.yRotate(m4.translation(11.7, 2.2, 15.5),3.1415),1.5,1.5,1.5),txt[ACQUA])
@@ -317,46 +318,6 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
     }
   }
 
-///////////////////////////////////  GAME LOGIC  ///////////////////////////////////
-/*
-
-  function drawCollectArea() {
-	
-    if (!endGame) {
-      const viewMatrix = m4.inverse(cameraMatrix);
-      
-      let objToDraw = getObjToDraw(objectsToDraw, "collectArea");
-      const programInfo = objToDraw.programInfo;
-      gl.useProgram(programInfo.program);
-      
-      let matrix = m4.identity();
-      
-      matrix = m4.translate(matrix, pxCollection, 0.1, pzCollection); //QUI
-      matrix = m4.scale(matrix, 2, 2, 2);
-      objToDraw.uniforms.u_world = matrix;
-      
-      webglUtils.setBuffersAndAttributes(gl, programInfo, objToDraw.bufferInfo);
-      
-      webglUtils.setUniforms(programInfo, objToDraw.uniforms);
-      
-      webglUtils.setUniforms(programInfo, {
-        u_view: viewMatrix,
-        u_projection: projectionMatrix,
-        u_world: matrix,
-      });
-      
-      if (insideArea) //cambia colore in verde
-        webglUtils.setUniforms(programInfo, {
-          u_color: [0,1,0,1],
-        });
-      
-      webglUtils.drawBufferInfo(gl, objToDraw.bufferInfo);
-
-      }
-
-
-                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-*/
 
   function render() {
     webglUtils.resizeCanvasToDisplaySize(gl.canvas);

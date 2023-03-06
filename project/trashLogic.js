@@ -4,7 +4,6 @@ var dx = 0, dz = 0;
 var pxTrash = 0;
 var pyTrash = 0;
 var pzTrash = 0;
-var insideArea = false; //default = red, green when the trash can be collected
 var collectTrash = [false, false, false]; 
 var collectedTrash = 0; 
 var endGame = false;

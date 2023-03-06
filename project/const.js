@@ -23,7 +23,7 @@ const fieldOfViewRadians = degToRad(60);
 
 //GUI SETTINGS
 const settings = {
-    D: 77,
+    D: 44,
     posX: 3.5,
     posY: 5,
     posZ: 2,

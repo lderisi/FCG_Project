@@ -8,7 +8,7 @@ function define_gui() {
   console.log("define gui")
     var gui = new dat.GUI();
     
-    gui.add(settings,"D").min(4).max(100).step(0.5).onChange(function() {
+    gui.add(settings,"D").min(4).max(44).step(0.5).onChange(function() {
       controls_render();});
     gui.add(settings,"posX").min(0).max(10).step(0.5).onChange(function() {
       controls_render();});
