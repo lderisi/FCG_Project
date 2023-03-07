@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - geometry - NURBS</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+		<style>
+			body {
+				background-color: #f0f0f0;
+				color: #444;
+			}
+			p {
+				color: #08f;
+				font-size: 1.5em;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="info">
+			<p>CG2122 MOD2</p>
+		</div>
+
+		<!-- Import maps polyfill -->
+		<!-- Remove this when import maps will be widely supported -->
+		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js"
+				}
+			}
+		</script>
+
+		<script type="module">
+
+			import * as THREE from 'three';
+
+			import Stats from './jsm/libs/stats.module.js';
+
+			import { NURBSCurve } from './jsm/curves/NURBSCurve.js';
+			import { NURBSSurface } from './jsm/curves/NURBSSurface.js';
+			import { ParametricGeometry } from './jsm/geometries/ParametricGeometry.js';
+			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { GUI } from './jsm/libs/lil-gui.module.min.js';
+
+			let container, stats;
+
+			let camera, scene, renderer;
+			let group;
+
+			let targetRotation = 0;
+			let targetRotationOnPointerDown = 0;
+
+			let pointerX = 0;
+			let pointerXOnPointerDown = 0;
+
+			let windowHalfX = window.innerWidth / 2;
+
+			var config = {
+				elements_number: 1,
+				spheres: false,
+				speed_up: 1,
+				mouse_attraction: false,
+				attraction: 0.5,
+				lightColor: 0x2cfc03,
+    			lightIntensity: 1,
+				lightMove: false,
+			};
+
+			var light;
+			var cubes = [];
+			var spheres = [];
+			var cube,nrbC;
+			var npt = 200; // numero di punti che definiscono la curva 
+			var step = 0; // step si riferisce ad un punto della curva -> ad ogni iterazione passa al punto successivo
+			var FFobject = [], FFMatrix = new THREE.Matrix4();
+			var mouseOver = false, mouse = new THREE.Vector3();
+			var element_properties = [];
+			const MAX_ELEMENTS = 300;
+
+			document.addEventListener('mousemove', onMouseMove, false);
+			document.addEventListener('mouseout', onMouseOut, false);
+
+			init();
+			animate();
+
+			function init() {
+
+				container = document.createElement('div');
+				document.body.appendChild(container);
+				create_gui();
+
+				camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2000);
+				camera.position.set(5, 5, 2);
+				camera.up.x = 0;
+				camera.up.y = 0;
+				camera.up.z = 1;
+				
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color(0xbfbfbf);
+
+				scene.add( new THREE.AmbientLight(0x808080 ));
+
+				const plight = new THREE.PointLight(0xffffff, 0.5, 1000);
+				plight.position.set(1, 1, 1);
+				scene.add(plight);
+
+				light = new THREE.PointLight(config.lightColor, config.lightIntensity, 500);
+				light.position.set(1, 1, 1);
+				scene.add(light);
+
+				const axesHelper = new THREE.AxesHelper( 200 ); // vediamo centro della scena e come è orientata la curva
+				scene.add( axesHelper ); // 200 lunghezza assi
+
+				
+				/*
+				var planeGeometry = new THREE.PlaneGeometry(5,5,1,1);
+				var planeMaterial = new THREE.MeshBasicMaterial({color: 0xcccccc});
+				var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+				plane.position.x = 0;
+				plane.position.y = 0;
+				plane.position.z = -1;
+				scene.add(plane); */
+
+				group = new THREE.Group();
+				scene.add( group );
+
+				//Set Nurbs Curve
+				const nurbsDegree = 5;
+				const nurbsKnots=[0,0,0,0,0,0,0.25,0.5,0.75,1,1,1,1,1,1]; // grado + 1 zeri, grado + 1 1 e in mezzo valori frazionali
+				const cp = [0.75,0,-0.5,1, 0.75,0.75,-0.5,1,
+                -0.75,0.75,	1,1, -0.75,0.75,1,1, -0.75,0,-1.5,0.75,
+                -0.75,-0.75,1,1, -0.75,-0.75,1,1, 0.75,-0.75,-0.5,1, 0.75,0,-0.5,1]; // per curva 2D basta impostare terza coordinata di tutti i punti allo stesso valore
+				var nurbsControlPoints = [ ];
+				var dim = nurbsKnots.length - (nurbsDegree + 1); // dimensione dello spazio
+				var j = 0;
+				for (let i = 0; i <= dim-1; i ++) {
+					nurbsControlPoints.push(
+						new THREE.Vector4(
+							cp[j],
+							cp[j + 1],
+							cp[j + 2],
+							cp[j + 3]));
+					j = j + 4;
+				}
+
+				// scaliamo i CP della curva
+				/*
+				var sc = new THREE.Vector4(1, 1, 1, 1);
+				for (let i = 0; i < dim - 1; i++) {
+					nurbsControlPoints[i].multiply(sc);
+				}
+				*/
+				
+				
+				/*
+				
+                //Definiamo un cubo e una sfera con le rispettive geometrie e materiali -> MESH
+				const cubeGeometry = new THREE.BoxGeometry(0.40, 0.40, 0.40);
+				const sphereGeometry = new THREE.SphereGeometry(0.07, 15, 15);
+				const cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x2cfc03})
+				const material =  new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5, metalness: 0.9 });
+                
+
+				
+				//Gestione più elementi che seguono la curva
+				for (let i = 0; i < MAX_ELEMENTS; i++) {
+					cubes[i] = new THREE.Mesh(cubeGeometry, cubeMaterial);
+					spheres[i] =  new THREE.Mesh(sphereGeometry, material);
+					element_properties[i] = new THREE.Vector4();
+					element_properties[i].x = Math.random() * 0.5; 
+					element_properties[i].x *= Math.round(Math.random()) ? 1 : -1; // gives negative number in half cases
+					element_properties[i].y = Math.random() * 0.5;
+					element_properties[i].y *= Math.round(Math.random()) ? 1 : -1;
+					element_properties[i].z = Math.random() * 0.5;
+					element_properties[i].z *= Math.round(Math.random()) ? 1 : -1;
+					element_properties[i].w = Math.random(); // attraction
+				}
+                */
+				//console.log(element_properties);
+				const nurbsCurve = new NURBSCurve(nurbsDegree, nurbsKnots, nurbsControlPoints);
+
+				const nurbsGeometry = new THREE.BufferGeometry();
+				nrbC = nurbsCurve.getPoints(npt) ;
+				nurbsGeometry.setFromPoints(nrbC);
+				const nurbsMaterial = new THREE.LineBasicMaterial({ color: 0xdf03fc, linewidth: 1 });
+				//Ho provato a settare il valore di linewidth > 1 ma OpenGL Core Profile per via delle limitazioni con il renderer di WebGL mi setta sempre il valore ad 1.  
+				//Due to limitations of the OpenGL Core Profile with the WebGL renderer on most platforms linewidth will always be 1 regardless of the set value.
+				/*
+				const nurbsLine = new THREE.Line(nurbsGeometry, nurbsMaterial);
+				var dst = [];
+				for (var i = 0; i <= npt; i++){
+					dst[i] = i/npt;
+					FFobject[i] = nurbsCurve.computeFrenetFrames(dst[i]);
+				}
+				*/
+				group.add(nurbsLine);
+				camera.lookAt(scene.position);
+
+				//
+
+				renderer = new THREE.WebGLRenderer({ antialias: true }); //così abilita l'antialiasing
+				renderer.setPixelRatio(window.devicePixelRatio);
+				renderer.setClearColor(new THREE.Color(0xbfbfbf));
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				
+
+				stats = new Stats();
+				container.appendChild(stats.dom);
+
+				container.style.touchAction = 'none';
+				container.addEventListener('pointerdown', onPointerDown);
+
+				//
+
+				window.addEventListener('resize', onWindowResize);
+
+				const cameraControls = new OrbitControls(camera, renderer.domElement);
+				cameraControls.addEventListener('change', render);
+				container.appendChild(renderer.domElement);
+			}
+
+			var geometry = new THREE.BoxGeometry(0.25, 0.25, 0.25);
+			var material = new THREE.MeshNormalMaterial();
+			cube = new THREE.Mesh(geometry, material);
+			scene.add(cube);
+
+
+
+			function create_gui() {
+				const gui = new GUI();
+				const sceneFolder = gui.addFolder('Scene');
+				sceneFolder.add(config, 'elements_number', 1, MAX_ELEMENTS, 1);
+				sceneFolder.add(config, 'spheres');
+				sceneFolder.add(config, 'speed_up', 1, 5, 1);
+				const mouseFolder = gui.addFolder('Mouse');
+				mouseFolder.add(config, 'mouse_attraction');
+				mouseFolder.add(config, 'attraction', 0.0, 2.0, 0.1);
+				const lightFolder = gui.addFolder('Light');
+				lightFolder.addColor(config, 'lightColor');
+				lightFolder.add(config, 'lightIntensity', 0.1, 2);
+				lightFolder.add(config, 'lightMove');
+				gui.close();
+			}
+
+			function onWindowResize() {
+
+				windowHalfX = window.innerWidth / 2;
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			function onPointerDown( event ) {
+
+				if ( event.isPrimary === false ) return;
+
+				pointerXOnPointerDown = event.clientX - windowHalfX;
+				targetRotationOnPointerDown = targetRotation;
+
+				document.addEventListener( 'pointermove', onPointerMove );
+				document.addEventListener( 'pointerup', onPointerUp );
+
+			}
+
+			function onPointerMove( event ) {
+
+				if ( event.isPrimary === false ) return;
+
+				pointerX = event.clientX - windowHalfX;
+
+				targetRotation = targetRotationOnPointerDown + ( pointerX - pointerXOnPointerDown ) * 0.02;
+
+			}
+
+			function onPointerUp() {
+
+				if ( event.isPrimary === false ) return;
+
+				document.removeEventListener( 'pointermove', onPointerMove );
+				document.removeEventListener( 'pointerup', onPointerUp );
+
+			}
+
+			function onMouseMove(event) {
+			  
+				mouseOver = true;
+				mouse.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1,0);
+				mouse.unproject(camera);
+				// Projects this vector from the camera's normalized device coordinate (NDC) space into world space.
+			}
+
+			function onMouseOut(event) {
+				mouseOver = false;
+			  }
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				light.color.set(config.lightColor);
+  				light.intensity = config.lightIntensity
+				if(config.lightMove) {
+					light.position.x = nrbC[step].x;
+					light.position.y = nrbC[step].y;
+					light.position.z = nrbC[step].z;
+				}
+
+				cube.position.x=nrbC[step].x;
+				cube.position.y=nrbC[step].y;
+				cube.position.z=nrbC[step].z;
+				step += 1;
+				if (step>=npt){
+				step=0;
+				}
+
+				/*
+				for (let i = 0; i < config.elements_number; i++) {
+					if(config.spheres) {
+						scene.add(spheres[i]);
+						for (let i = 0; i < config.elements_number; i++) { scene.remove(cubes[i]); }					} else {
+						scene.add(cubes[i]);
+						for (let i = 0; i < config.elements_number; i++) { scene.remove(spheres[i]); }
+					}	
+				}
+				for (let i = MAX_ELEMENTS; i >= config.elements_number; i--) {
+					if(config.spheres) {
+						scene.remove(spheres[i]);
+					} else {
+						scene.remove(cubes[i]);
+					}
+				}
+
+				
+				for (let i = 0; i < config.elements_number; i++) {
+					if (config.mouse_attraction) {
+						FFMatrix.fromArray([FFobject[step].tangents.x,FFobject[step].tangents.y,
+						FFobject[step].tangents.z,0,
+						FFobject[step].normals.x,FFobject[step].normals.y,
+						FFobject[step].normals.z,0,
+						FFobject[step].binormals.x,FFobject[step].binormals.y,
+						FFobject[step].binormals.z,0,
+						nrbC[step].x + mouse.x * config.attraction * element_properties[i].w + element_properties[i].x,
+						nrbC[step].y + mouse.y * config.attraction * element_properties[i].w + element_properties[i].y,
+						nrbC[step].z + mouse.z/2 * config.attraction * element_properties[i].w + element_properties[i].z, 1]);
+					} else {
+						FFMatrix.fromArray([FFobject[step].tangents.x,FFobject[step].tangents.y,
+						FFobject[step].tangents.z,0,
+						FFobject[step].normals.x,FFobject[step].normals.y,
+						FFobject[step].normals.z,0,
+						FFobject[step].binormals.x,FFobject[step].binormals.y,
+						FFobject[step].binormals.z,0,
+						nrbC[step].x + element_properties[i].x,
+						nrbC[step].y + element_properties[i].y,
+						nrbC[step].z + element_properties[i].z,1]);
+					}
+					if(config.spheres) {
+						spheres[i].matrix.copy(FFMatrix);
+						spheres[i].matrixAutoUpdate = false;
+					} else {
+						cubes[i].matrix.copy(FFMatrix);
+						cubes[i].matrixAutoUpdate = false;
+					}
+					
+				}
+				*/
+
+				step += config.speed_up; // faccio più passi nello stesso momento
+				if (step >= npt){
+					step = 0;
+				}
+				
+				renderer.render(scene, camera);
+
+			}
+
+		</script>
+
+	</body>
+</html>
