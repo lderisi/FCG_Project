@@ -1,0 +1,250 @@
+<!-- Progetto ALLL -->
+
+<!doctype html>
+<html>
+	<head>
+		<title>Computer Graphics - De Risi</title>
+		<link rel="icon" href="images/games.png" type="image/icon type">
+		<style>
+			h1 {
+				color: rgb(36, 117, 90);
+				font-size: 50px;
+			}
+			h1, h2, h3 {
+				position: relative;
+				text-align: center;
+			}
+			p, ul, li {
+				margin-left: 20px;
+				margin-right: 20px;
+				font-size: 20px;
+			}
+			body {
+			  background-color: rgb(220, 228, 148);
+			}
+			div {
+				width:100%;
+				display: flex;
+				justify-content: center;
+			}
+			img {
+				margin: 5px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<h1>Computer Graphics - Progetto Trash Truck</h1>
+		<h2>Progetto per il corso di Fondamenti di Computer Graphics M</h2>
+		<h3>Realizzato da Luca De Risi matr.0000999694 di Ingegneria Informatica</h3>
+		
+		<div>
+			<img src="images\Blender\immagine8.png" height="600" >
+		</div>
+		
+		<br>
+		<h2>Introduzione e contesto</h2>
+		<p>
+			Irpiniambiente, azienda per i servizi ambientali della città di Avellino, da sempre si impegna a promuovere una cultura attenta alla tutela ambientale incentivando comportamenti responsabili.
+			A tal proposito l'azienda lavora in modo efficiente per la città garantendo servizi e pulizia a tutti i cittadini mediante un'ottimizzazione della raccolta differenziata con sgargianti camioncini della nettezza gialli.
+			
+			L'interfaccia interattiva permetterà di immergersi nel mondo dei servizi ambientali girovagando per la città alla ricerca di cassonetti per una città più controllata e di conseguenza migliore e pulita, tutto ciò
+			a bordo di uno splendido camioncino giallo dell'azienda Irpiniambiente.
+		</p>
+		<p>
+			<!--TESTO-->
+		</p>
+		<br>
+		<br>
+		<h2>Ambiente e Scena</h2>
+		<p>
+		Per la realizzazione della città, sono state utilizzate diverse tecniche.
+		La città è stata pensata come un mondo chiuso texturato sulle pareti per simulare un paesaggio ed è stata posta su un piano texturato per simulare l'urbanistica. L'ambiente è stato arricchito con molti palazzi e grattacieli tramite il caricamento di alcuni obj 
+		wavefront che sono stati poi modificati con tecniche di estrusione e poi sono stati colorati e texturati.
+		L'urbanistica della città è stata creata nei minimi dettagli e tutto il terreno è stato texturato per definire le carreggiate,le strisce pedonali,la piazza dotata di fontana e sono stati 
+		caricati alcuni cassonetti sparsi per la città, tutto reso graficamente sempre con delle texture e colori.
+		Tramite il caricamento di un obj di base è stata creata la sede centrale dell'azienda Irpiniambiente totalmente colorata con un colore effetto vetro e personalizzata con loghi sui lati con 
+		l'utilizzo di texture ed in più è stato realizzato un piazzale per simulare
+		un parcheggio davanti alla sede con dei camioncini parcheggiati. Sul tetto di un grattacielo centrale compare anche un cartellone pubblicitario personalizzato con il nome e le caratteristiche 
+		del corso di FCG.		
+		
+		La difficoltà maggiore nel gestire questi tipi di oggetti è la texture, in quanto per renderla graficamente sono stati gestiti molti parametri legati al tipo di materiale. 
+		Sono stati gestiti i diversi oggetti inclusi nell'obj e resi in base alle loro caratteristiche per rendere le texture il più reale possibile.
+		</p>
+		<div>
+			<img src="images\Blender\immagine.png" height="200" >
+			<img src="images\Blender\backface_on.png" height="200" >
+			<img src="images\Blender\immagine1.png" height="200" >
+			<img src="images\Blender\immagine2.png" height="200" >
+		</div>
+		<div>
+			<img src="images\Blender\immagine3.png" height="200" >
+			<img src="images\Blender\immagine4.png" height="200" >
+		</div>
+
+		<br>
+		<br>
+		<h2>Illuminazione e ombre</h2>
+		
+		<div>
+			<img src="images\Blender\browser1.png" height="500" >
+		</div>
+		
+		<p>	
+		Per illuminare il mondo, è stata posta una luce sulla sommità del cubo in modo da simulare una luce ambientale. Tale luce è costruita come una luce direzionale che, colpendo gli oggetti, 
+		grazie alle coordinate di profondità, è in grado di determinare quali oggetti siano in ombra e quali no.La luce è interamente gestibile dal menu a tendina che permette le varie modifiche dei parametri e sempre dal menu è possibile modificare il tipo di luce da direzionale a 
+		spotlight.
+		Il problema principale di questo tipo di illuminazione sono le ombre: esse risultano pixelate sia sugli oggetti, sia nella loro proiezione prospettica sul piano, rendendo il risultato complessivo accettabile, 
+		ma di bassa qualità. Una possibile miglioria da applicare sarebbe quella di individuare un algoritmo di Shading adeguato che possa ammorbidire i contorni delle ombre e renderle più gradevoli e realistiche.
+
+		Sono stati gestiti due Shader Program per attivare l'ombreggiatura grazie alla profondità. Queste ombre possono essere attivate o disattivate 
+		dal menù e la gestione del tutto rende l'applicazione più realistica e le modifiche permettono di capire a pieno l'effetto dell'illuminazione e delle ombre.
+
+			<br><br>
+		<!--TESTO -->
+
+		</p>
+		<br>
+		<br>
+		<h2>Oggetto in movimento</h2>
+
+		<div>
+			<img src="images\Blender\immagine5.png" height="200" >
+			<img src="images\Blender\immagine6.png" height="200" >
+			<img src="images\Blender\immagine7.png" height="200" >
+		</div>
+		
+		<p>	
+		Al contrario delle geometrie utilizzate per disegnare palazzi e simili, che sono fisse, nella scena c'è anche un oggetto in movimento,il  camion dei rifiuti giallo.
+		L'oggetto principale della scena è un camion giallo totalmente texturato con tutti i dettagli della carrozzeria,ruote,3 loghi dell'azienda e sul tettuccio un'immagine dell'autore del progetto come da requisiti e 
+		tutta la parte grafica di questo obj è stata curata nei minimi dettagli con l'ausilio di Blender che ha permesso di aggiungere dettagli al camion.
+
+		Per semplicità, il camioncino attualmente attraversa i palazzi e tutti gli altri oggetti, ma si potrebbe gestire la problematica trovando le coordinate degli edifici e considerandole come ostacoli.
+		La fisica del movimento del camion resta un punto aperto per sviluppi futuri come feature aggiuntiva ed,in un primo momento, è stata anche implementata ma poi messa da parte perchè 
+		la resa risultava onerosa per via delle grafiche molto pesanti e quindi poco performante. La fisica dei movimenti e quindi del moto del camion era stata gestita seguendo le implementazioni di 
+		fisica elementare viste a lezione estrapolate con precisione dal file cg-car2.js.		
+		</p>
+		<br>
+		<br>
+		
+		<h2>Texture</h2>
+		<br>
+		<p>
+		Sono state utilizzate delle texture per rendere più reale il tutto.
+		Con precisione sono state utilizzate le seguenti Texture applicate ai vari obj:</p>
+		<br>
+		<div>
+			<img src="images\textures\acqua.jpg" height="100" >
+			<img src="images\textures\cielo.jpg" height="100" >
+			<img src="images\textures\irpiniaambiente.png" height="55" >
+		</div>
+		
+		<div>
+			<img src="images\textures\mappa.jpg" height="100" >
+			<img src="images\textures\Screenshot_fcg.png" height="55" >
+			<img src="images\textures\texture_1024_1024_last.jpg" height="100" >
+		</div>
+		
+		<br>
+		<br>
+
+		
+		
+		<h2>Interazione con l'interfaccia</h2>
+		
+		<p>
+		All'utente sono permesse diverse azioni, fruibili sia su pc sia su mobile. Principalmente l'interfaccia si presenta con una canvas in cui si vede l'ambientazione e con cui si può interagire in diversi modi:
+		</p>	
+			<ul>
+				<li>Attraverso la tastiera</li>
+				<li>Attraverso il mouse</li>
+				<li>Attraverso il touchscreen (nel caso mobile)</li>
+			</ul>
+		<h3>Versione Desktop</h3>
+		
+		<div>
+			<img src="images\Blender\browser.png" height="300" >
+			<img src="images\Blender\browser1.png" height="300" >
+		</div>
+		<p>
+			In questa versione per far muovere il camion è necessario utilizzare la tastiera nel 
+			seguente modo:
+		</p>
+		<ul>
+			<li>KeyUp: acceleratore in avanti</li>
+			<li>KeyDown: acceleratore in retromarcia</li>
+			<li>KeySx: direzione a sinistra del moto</li>
+			<li>KeyDx: direzione a destra del moto</li>
+		</ul>
+		<p>
+			Da notare che il camion non seguendo la fisica del movimento tende a muoversi a scatti e quindi bisogna prestare attenzione nel momento in cui si opta per un movimento direzionale.
+			Il movimento del camion può avvenire come detto tramite tastiera o tramite mouse infatti gli eventi del mouse sono stati gestiti in modo tale da coadiuvare il camion nel movimento e per
+			semplificare l'interazione utente.
+			<br>
+		</p>
+		<br>
+		<br>
+		
+				<h3>Pannello di controllo/Menù</h3>
+
+				<div>
+			<img src="images\Blender\menu.png" height="550" >
+		</div>
+		
+		<p>
+			Il pannello di controllo è stato dettagliatamente curato e presenta diversi parametri modificabili:
+			<li>"log click" permette di attivare o disattivare i log nella console del browser</li>
+			<li>"target switch" permette di switchare tra gli oggetti presenti in scena</li>
+			<li>"follow click" se attiva permette di ancorare il target della camera all'oggetto e permette di seguire l'oggetto nei movimenti</li>
+			<li>"look at click" permette di attivare l'ancoramento del target</li>
+			<li>"cameraX","cameraY","cameraZ" permette di spostare la posizione della camera sugli asse X,Y,Z</li>
+			<li>"cameraUpX","cameraUpX","cameraUpX" permettono di settare il versore "up" della camera</li>
+			<li>"zNear" e "zFar" permettono di impostare la distanza di rendering della camera </li>
+			<li>"fov" permette di modificare la Field of View</li>
+			<li>"targetX","targetY","targetZ" permette di modificare le coordinate del punto in cui la camera sta guardando</li>
+			<li>"shadows", permette di abilitare e disabilitare il rendering delle ombre</li>
+			<li>"lightFrustum" permette di visualizzare il frustum della sorgente luminosa</li>
+			<li>"lightPosX","lightPosX","lightPosX"  permettono di gestire la luci mediante modifica delle coordinate</li>
+			<li>"lightTargX","lightTargX","lightTargX" permettono di settare la  direzione della luce</li>
+			<li>"lightFov" permette di modificare il campo visivo della sorgente luminosa, parametro che influisce solo sulla sorgente luminosa spot</li>
+			<li>"lightNear" modifica la distanza alla quale la sorgente di luce parte </li>
+			<li>"lightFar" modifica la distanza massima a cui la sorgente luminosa può illuminare</li>
+			<li>"spotLight" permette di definire il tipo di illuminazione, direzionale o spot</li>
+			<li>"lightFrustum" permette di visualizzare il frustum della sorgente luminosa</li>
+			<li>"lightWidth" e "lightHeight" permettono la modifica delle dimensioni della luce in modalità direzionale</li>
+			<li>"CurrentObj" permette di scegliere quale elemento selezionare per le modifiche da menu</li>
+			<li>"posx", "posY", "posZ" definiscono la modifica delle coordinate dell'oggetto</li>
+			<li>"scaleX", "scaleY", "scaleZ" definiscono la scalatura dell'oggetto</li>
+			<li>"psi" "theta" "phi" abilita alla modifica degli angoli per la rotazione oggetto</li>
+			<li>"draw" permette di invocare la draw function</li>
+
+		</p>
+		
+		<br>
+		<h3>Versione Mobile</h3>
+		<div>
+			<img src="images\Blender\mobile.png" height="300" >
+					<p>
+
+			<br>
+		</p>
+		</div>
+		<p>
+			Siccome su mobile non si può utilizzare la tastiera durante il gioco, sono stati gestiti i movimenti tramite gli eventi touch e il menu a tendina può essere modificato interattivamente tramite
+            le gesture del touch. L'utilizzo è molto semplice per un'applicazione del genere ed è molto intuitivo infatti permette all'utente di spostare il camion ed esplorare la mappa 
+			in modo fluido e intuitivo.
+			Al momento non è implementata ma si potrebbe utilizzare il multi-touch dello smartphone come se fosse il puntatore.
+			<br>
+		</p>
+
+				<h3>Note</h3>
+		<p>
+		Il progetto nasce grazie alla collaborazione di 4 colleghi, con la realizzazione di una solida base di codice comune permettendo poi a ognuno di noi di sviluppare il progetto personale 
+		con maggiore precisione. Il codice organizzato e strutturato in Typescript, permette l'utilizzo di WebGl e degli script JavaScritp con una maggiore tipizzazione. 
+		Il modello di programmazione è stato riscritto sulla programazione ad aventi, dove ogni azione effetuata scatena un evento che è possibile catturare per aggiornare la scena. 
+		Ciò permette una maggiore efficienza a livello di utilizzo di risorse e di efficienza del codice. Si ringrazia dunque Luca Landolfi, Luca Marchegiani ed Antonio Franzese per la collaborazione.
+			<br>
+		</p>
+		
+	
+	</body>
