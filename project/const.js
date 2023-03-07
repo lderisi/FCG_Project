@@ -42,7 +42,7 @@ const settings = {
     scaleY:1.2,
     scaleZ:1.2,
     shadows: false,
-    firstCamera: false,
+    fixCamera: false,
   };
   
  

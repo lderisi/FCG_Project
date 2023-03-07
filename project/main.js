@@ -350,11 +350,17 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
 
     const target = [0, 3, 0];
     const up = [0, 1, 0];
-    
-    var camera = [settings.D*Math.sin(PHI)*Math.cos(THETA), settings.D*Math.cos(PHI), settings.D*Math.sin(PHI)*Math.sin(THETA)];
-    
-    const cameraMatrix = m4.lookAt(camera, target, up) ;
 
+    
+    if(settings.fixCamera){
+      var camera = [settings.D*Math.sin(PHI)*Math.cos(THETA), settings.D*Math.cos(PHI), settings.D*Math.sin(PHI)*Math.sin(THETA)];
+      var cameraMatrix = m4.lookAt(camera, target, up) ;
+    }
+    else {
+    var target_follow = [settings.dx, 0 ,settings.dz];
+    var camera_follow = [settings.dx+(-settings.D*Math.sin(PHI)*Math.cos(THETA)), settings.D*Math.cos(PHI), settings.dz+(-settings.D*Math.sin(PHI)*Math.sin(THETA))];
+    var cameraMatrix = m4.lookAt(camera_follow, target_follow, up) ;
+    }
     
     truckUniforms = {
       u_world : m4.scale(m4.zRotate(m4.xRotate(m4.translation(settings.dx, -0.05, settings.dz),-1.57),angle),settings.scaleX,settings.scaleY,settings.scaleZ),
@@ -362,12 +368,9 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
 
     dumpsterUniforms.u_world = m4.scale(m4.zRotate(m4.xRotate(m4.translation(pxTrash, pyTrash, pzTrash),0),0),2.5,2.5,2.5)
 
-/*
-    if(settings.firstCamera){
-      THETA = degToRad(0), PHI = degToRad(0);
-      render();
-    }
-*/
+
+
+
     if(settings.shadows){
       drawScene(lightProjectionMatrix,lightWorldMatrix,m4.identity(),lightWorldMatrix,colorProgramInfo);
     }

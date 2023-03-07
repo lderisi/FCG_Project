@@ -46,13 +46,13 @@ function define_gui() {
       controls_render();});
     gui.add(settings,"shadows").onChange(function() {
       controls_render();});
-    gui.add(settings,"firstCamera").onChange(function() {
+    gui.add(settings,"fixCamera").onChange(function() {
       controls_render();});
     gui.close();
   } 
 
 
-  var THETA = degToRad(90), PHI = degToRad(60);
+  var THETA = degToRad(-90), PHI = degToRad(60);
   var drag, old_x, old_y, dX, dY;
   
   function attachEvents() {
