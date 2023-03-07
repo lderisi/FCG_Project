@@ -348,16 +348,16 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
     gl.viewport(0, 0, depthTextureSize, depthTextureSize);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    const target = [0, 3, 0];
     const up = [0, 1, 0];
 
     
     if(settings.fixCamera){
+      const target = [0, 3, 0];
       var camera = [settings.D*Math.sin(PHI)*Math.cos(THETA), settings.D*Math.cos(PHI), settings.D*Math.sin(PHI)*Math.sin(THETA)];
       var cameraMatrix = m4.lookAt(camera, target, up) ;
     }
     else {
-    var target_follow = [settings.dx, 0 ,settings.dz];
+    const target_follow = [settings.dx, 0 ,settings.dz];
     var camera_follow = [settings.dx+(-settings.D*Math.sin(PHI)*Math.cos(THETA)), settings.D*Math.cos(PHI), settings.dz+(-settings.D*Math.sin(PHI)*Math.sin(THETA))];
     var cameraMatrix = m4.lookAt(camera_follow, target_follow, up) ;
     }
