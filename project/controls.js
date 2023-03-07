@@ -231,6 +231,41 @@ canvas.addEventListener("touchmove", function (e) {
 }, false);
 
   }
+
+  var pressed;
+  document.getElementById("ButtonUp").onclick = function(){
+    newDx = settings.dx - Math.sin(angle)
+    newDz = settings.dz - Math.cos(angle)
+    if(checkPosition(newDx, newDz)){
+    settings.dx = newDx;
+    settings.dz = newDz;
+    controls_render();
+}};
+  document.getElementById("ButtonLeft").onclick = function(){
+    if(settings.dz>=-21.5){
+      angle += degToRad(5);
+        controls_render();
+        }};
+  document.getElementById("ButtonRight").onclick = function(){
+    if(settings.dz>=-21.5){
+    angle -= degToRad(5);
+    controls_render();
+    }};
+  document.getElementById("ButtonDown").onclick = function(){
+    newDx = settings.dx + Math.sin(angle)
+    newDz = settings.dz + Math.cos(angle)
+    if(checkPosition(newDx, newDz)){
+    settings.dx = newDx;
+    settings.dz = newDz;
+    controls_render();
+  }};
+  document.getElementById("ButtonPick").onclick = function(){
+    if(Math.abs(settings.dx-pxTrash) < 5 && Math.abs(settings.dz-pzTrash) < 5){
+      console.log("Raccolgo");
+      pickTrash();
+    }};
+
+
 if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
 
   document.getElementById("ButtonLeft").style.visibility = "hidden";
@@ -238,15 +273,6 @@ if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navig
   document.getElementById("ButtonDown").style.visibility = "hidden";
   document.getElementById("ButtonRight").style.visibility = "hidden";
   document.getElementById("ButtonPick").style.visibility = "hidden";
-
-  var pressed;
-  document.getElementById("ButtonUp").onclick = function(){pressed = "ButtonUp"};
-  document.getElementById("ButtonLeft").onclick = function(){
-          console.log("ciao");
-      };
-  document.getElementById("ButtonRight").onclick = function(){pressed = "ButtonRight"};
-  document.getElementById("ButtonDown").onclick = function(){pressed = "ButtonDown"};
-  document.getElementById("ButtonPick").onclick = function(){key[4]=true; pressed = "ButtonPick"};
 
 
   //canvas.onmousedown = mouseDown;

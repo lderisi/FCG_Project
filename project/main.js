@@ -352,8 +352,8 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
 
     
     if(settings.fixCamera){
-      const target = [0, 3, 0];
-      var camera = [settings.D*Math.sin(PHI)*Math.cos(THETA), settings.D*Math.cos(PHI), settings.D*Math.sin(PHI)*Math.sin(THETA)];
+      const target = [0, 0, 0];
+      var camera = [-settings.D*Math.sin(PHI)*Math.cos(THETA), settings.D*Math.cos(PHI), -settings.D*Math.sin(PHI)*Math.sin(THETA)];
       var cameraMatrix = m4.lookAt(camera, target, up) ;
     }
     else {
