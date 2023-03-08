@@ -48,6 +48,8 @@ function define_gui() {
       controls_render();});
     gui.add(settings,"fixCamera").onChange(function() {
       controls_render();});
+      gui.add(settings,"startGame").onChange(function() {
+        controls_render();});
     gui.close();
   } 
 
@@ -120,10 +122,11 @@ canvas.addEventListener('mousedown', e => {
   */
  
 
-  if (e.which === 2 && !clicked) {
-    clicked = true;
+  if (e.which === 2 || settings.startGame && !clicked) {
     // Do something when the user does middle click
     alert('START GAME - Raccogli i tre cassonetti che compariranno in giro per la città.')
+    drag=false;
+    clicked = true;
     window.addEventListener("keydown", function (event) {
       
       if(event.keyCode == 32){
@@ -284,57 +287,10 @@ if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navig
 
 }
 
-/*
-//*****************************************************************************************************************
-// MOBILE EVENTS
-//*****************************************************************************************************************
-
-function doTouchstart(e){
-console.log(e);
-if (pressed === "ButtonUp"){
-    key[0]=true;    // THE W KEY
-} 
-if (pressed === "ButtonDown"){
-    key[2]=true;    // THE S KEY  
-} 
-if (pressed === "ButtonLeft"){
-// THE A KEY   
-} 
-if (pressed === "ButtonRight"){
-    key[3]=true;    // THE D KEY  
-} 
-if (pressed === "ButtonPick"){
-pressedOnMobile = true;
-    key[4]=true;    // THE BAR SPACE	
-} 	
-}
-function doTouchend(e){
-if (pressed === "ButtonUp"){
-pressed = "";
-    key[0]=false;   // THE W KEY
-} 
-if (pressed === "ButtonDown"){
-pressed = "";
-    key[2]=false;   // THE S KEY    
-} 
-if (pressed === "ButtonLeft"){
-pressed = "";
-    key[1]=false;   // THE A KEY
-} 
-if (pressed === "ButtonRight"){
-pressed = "";
-    key[3]=false;   // THE D KEY    
-} 
-if (pressed === "ButtonPick"){
-pressed = "";
-    key[4]=false;    // THE BAR SPACE	
-}
-}
-*/
 
   function checkPosition(dx, dz) {
     console.log(dx,dz);
-  if (!(dx <= 21.5 && dx >= -21.5 && dz <= 21.5 && dz >= -21.5)){
+  if (!(dx <= 23 && dx >= -23 && dz <= 23 && dz >= -23)){
     return false;
   } 
 
@@ -345,7 +301,7 @@ pressed = "";
 			return true;
 		}
 	}
-	
+
 	//collision building 1 
 	if ((dx >= 17) && (dx <= 25)) {
 		if ((dz <= 16) && (dz >= 24)) {
@@ -377,5 +333,6 @@ pressed = "";
 			return false;
 		}
 	}
+  
     return true;
     }

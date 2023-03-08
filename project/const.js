@@ -43,6 +43,7 @@ const settings = {
     scaleZ:1.2,
     shadows: false,
     fixCamera: false,
+    startGame: false,
   };
   
  
