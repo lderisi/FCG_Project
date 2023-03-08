@@ -293,7 +293,7 @@ if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navig
   if (!(dx <= 23 && dx >= -23 && dz <= 23 && dz >= -23)){
     return false;
   } 
-
+/*
       	//collision fountain
 	if ((dx >= 8 ) && (dx <= 16)) {
 		if ((dz <= 10) && (dz >= 18)) {
@@ -333,6 +333,6 @@ if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navig
 			return false;
 		}
 	}
-  
+  */
     return true;
     }
