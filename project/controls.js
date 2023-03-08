@@ -262,7 +262,7 @@ canvas.addEventListener("touchmove", function (e) {
 	//collision building  
 	if ((dx >= 17) && (dx <= 25)) {
 		if ((dz <= 16) && (dz >= 24)) {
-			console.log("under building 5");	
+			console.log("collision building 5");	
 			return false;
 		}
 	}
@@ -270,7 +270,7 @@ canvas.addEventListener("touchmove", function (e) {
 	//collision building 3 
 	if ((dx >= 2) && (dx <= -20)) {
 		if ((dz <= -21.5) && (dz >= -6.6)) {
-			console.log("under building 3");	
+			console.log("collision building 3");	
 			return false;
 		}
 	}
@@ -278,7 +278,7 @@ canvas.addEventListener("touchmove", function (e) {
 	//collision  tree
 	if ((dx >= 20) && (dx <= 26)) {
 		if ((dz <= -9) && (dz >= -17)) {
-			console.log("under tree");	
+			console.log("collision tree");	
 			return false;
 		}
 	}
@@ -288,16 +288,16 @@ canvas.addEventListener("touchmove", function (e) {
 
   
                                     /******MOBILE VERSION  **********/
-if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+//if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
   
-/*if(!(navigator.userAgent.match(/Android/i)
+if(!(navigator.userAgent.match(/Android/i)
   || navigator.userAgent.match(/webOS/i)
   || navigator.userAgent.match(/iPhone/i)
   || navigator.userAgent.match(/iPad/i)
   || navigator.userAgent.match(/iPod/i)
   || navigator.userAgent.match(/BlackBerry/i)
   || navigator.userAgent.match(/Windows Phone/i))){
-    */
+    
 
   document.getElementById("ButtonLeft").style.visibility = "hidden";
   document.getElementById("ButtonUp").style.visibility = "hidden";
@@ -326,12 +326,12 @@ var pressed;
 }};
   document.getElementById("ButtonLeft").onclick = function(){
     if(settings.dz>=-21.5){
-      angle += degToRad(5);
+      angle += degToRad(15);
         controls_render();
         }};
   document.getElementById("ButtonRight").onclick = function(){
     if(settings.dz>=-21.5){
-    angle -= degToRad(5);
+    angle -= degToRad(15);
     controls_render();
     }};
   document.getElementById("ButtonDown").onclick = function(){
