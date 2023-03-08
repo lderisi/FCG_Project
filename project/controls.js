@@ -8,11 +8,11 @@ function define_gui() {
   console.log("define gui")
     var gui = new dat.GUI();
     
-    gui.add(settings,"D").min(4).max(44).step(0.5).onChange(function() {
+    gui.add(settings,"D").min(8).max(44).step(0.5).onChange(function() {
       controls_render();});
     gui.add(settings,"posX").min(0).max(10).step(0.5).onChange(function() {
       controls_render();});
-    gui.add(settings,"posY").min(0).max(10).step(0.5).onChange(function() {
+    gui.add(settings,"posY").min(8).max(25).step(0.5).onChange(function() {
       controls_render();});
     gui.add(settings,"posZ").min(0).max(10).step(0.5).onChange(function() {
       controls_render();});
@@ -87,7 +87,7 @@ function define_gui() {
     //}
   } else {
       // up
-      if(settings.D > 4){
+      if(settings.D > 8){
       settings.D -= 1;
       controls_render();
     }
@@ -235,7 +235,89 @@ canvas.addEventListener("touchmove", function (e) {
 
   }
 
-  var pressed;
+  function checkPosition(dx, dz) {
+    console.log(dx,dz);
+  if (!(dx <= 23 && dx >= -23 && dz <= 23 && dz >= -23)){
+    return false;
+  } 
+
+  	//collision building 4 
+
+	if ((dx >= -26) && (dx <= -13)) {
+		if ((dz <= 21) && (dz >= 15)) {
+			console.log("collision building 4");	
+			return false;
+		}
+	}
+
+
+
+      	//collision fountain
+	if ((dx >= 4 ) && (dx <= 13)) {
+		if ((dz >= 14) && (dz <= 18)) {
+			console.log("collision fountain");	
+			return false;
+		}
+	}
+
+  
+	//collision building  
+	if ((dx >= 17) && (dx <= 25)) {
+		if ((dz <= 16) && (dz >= 24)) {
+			console.log("under building 5");	
+			return false;
+		}
+	}
+	
+	//collision building 3 
+	if ((dx >= 2) && (dx <= -20)) {
+		if ((dz <= -21.5) && (dz >= -6.6)) {
+			console.log("under building 3");	
+			return false;
+		}
+	}
+	
+	//collision  tree
+	if ((dx >= 20) && (dx <= 26)) {
+		if ((dz <= -9) && (dz >= -17)) {
+			console.log("under tree");	
+			return false;
+		}
+	}
+  
+    return true;
+    }
+
+  
+                                    /******MOBILE VERSION  **********/
+if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+  
+/*if(!(navigator.userAgent.match(/Android/i)
+  || navigator.userAgent.match(/webOS/i)
+  || navigator.userAgent.match(/iPhone/i)
+  || navigator.userAgent.match(/iPad/i)
+  || navigator.userAgent.match(/iPod/i)
+  || navigator.userAgent.match(/BlackBerry/i)
+  || navigator.userAgent.match(/Windows Phone/i))){
+    */
+
+  document.getElementById("ButtonLeft").style.visibility = "hidden";
+  document.getElementById("ButtonUp").style.visibility = "hidden";
+  document.getElementById("ButtonDown").style.visibility = "hidden";
+  document.getElementById("ButtonRight").style.visibility = "hidden";
+  document.getElementById("ButtonPick").style.visibility = "hidden";
+
+  
+  //canvas.onmousedown = mouseDown;
+  canvas.onmouseup = "mouseup";
+  canvas.mouseout = "mouseup";
+  canvas.onmousemove = "mousemove";
+  window.addEventListener("touchstart", (function(){ return true}));
+  window.addEventListener("touchend", (function(){ return true}));
+
+}
+
+var pressed;
   document.getElementById("ButtonUp").onclick = function(){
     newDx = settings.dx - Math.sin(angle)
     newDz = settings.dz - Math.cos(angle)
@@ -268,71 +350,3 @@ canvas.addEventListener("touchmove", function (e) {
       pickTrash();
     }};
 
-
-if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
-
-  document.getElementById("ButtonLeft").style.visibility = "hidden";
-  document.getElementById("ButtonUp").style.visibility = "hidden";
-  document.getElementById("ButtonDown").style.visibility = "hidden";
-  document.getElementById("ButtonRight").style.visibility = "hidden";
-  document.getElementById("ButtonPick").style.visibility = "hidden";
-
-
-  //canvas.onmousedown = mouseDown;
-  canvas.onmouseup = mouseUp;
-  canvas.mouseout = mouseUp;
-  canvas.onmousemove = mouseMove;
-  window.addEventListener('touchstart');
-  window.addEventListener('touchend');
-
-}
-
-
-  function checkPosition(dx, dz) {
-    console.log(dx,dz);
-  if (!(dx <= 23 && dx >= -23 && dz <= 23 && dz >= -23)){
-    return false;
-  } 
-/*
-      	//collision fountain
-	if ((dx >= 8 ) && (dx <= 16)) {
-		if ((dz <= 10) && (dz >= 18)) {
-			console.log("under fountain");	
-			return true;
-		}
-	}
-
-	//collision building 1 
-	if ((dx >= 17) && (dx <= 25)) {
-		if ((dz <= 16) && (dz >= 24)) {
-			console.log("under building 5");	
-			return false;
-		}
-	}
-	
-	//collision building 2 
-	if ((dx >= -26) && (dx <= -13)) {
-		if ((dz <= 21) && (dz >= 15)) {
-			console.log("under building 4");	
-			return false;
-		}
-	}
-	
-	//collision building 3 
-	if ((dx >= 2) && (dx <= -20)) {
-		if ((dz <= -21.5) && (dz >= -6.6)) {
-			console.log("under building 3");	
-			return false;
-		}
-	}
-	
-	//collision  tree
-	if ((dx >= 20) && (dx <= 26)) {
-		if ((dz <= -9) && (dz >= -17)) {
-			console.log("under tree");	
-			return false;
-		}
-	}
-  */
-    return true;
-    }

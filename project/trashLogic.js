@@ -44,6 +44,10 @@ function areaTrashInit(){
 }
 
 function checkIfUnderBuildings() {
+	if (!(dx <= 13 && dx >= -13 && dz <= 13 && dz >= -13)){
+		return false;
+	  }
+
 	//not under fountain
 	if ((dx >= 8 ) && (dx <= 16)) {
 		if ((dz <= 10) && (dz >= 18)) {

@@ -326,7 +326,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
     gl.enable(gl.DEPTH_TEST);
 
     const lightWorldMatrix = m4.lookAt(
-        [settings.posX, settings.posY, settings.posZ],         
+        [settings.posX, settings.posY , settings.posZ],         
         [settings.targetX, settings.targetY, settings.targetZ], 
         [0, 1, 0],                                             
     );
@@ -335,7 +335,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
             degToRad(settings.lightFieldOfView),
             settings.projWidth / settings.projHeight,
             1,  
-            30)   
+            14)   
         : m4.orthographic(
             -settings.projWidth / 2,   
              settings.projWidth / 2,   

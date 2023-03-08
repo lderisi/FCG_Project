@@ -25,7 +25,7 @@ const fieldOfViewRadians = degToRad(60);
 const settings = {
     D: 15,
     posX: 3.5,
-    posY: 5,
+    posY: 10,
     posZ: 2,
     targetX: 0,
     targetY: 1,
