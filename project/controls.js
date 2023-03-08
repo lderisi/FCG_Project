@@ -250,8 +250,6 @@ canvas.addEventListener("touchmove", function (e) {
 		}
 	}
 
-
-
       	//collision fountain
 	if ((dx >= 4 ) && (dx <= 13)) {
 		if ((dz >= 14) && (dz <= 18)) {
@@ -260,7 +258,7 @@ canvas.addEventListener("touchmove", function (e) {
 		}
 	}
 
-  
+  /*
 	//collision building  
 	if ((dx >= 17) && (dx <= 25)) {
 		if ((dz <= 16) && (dz >= 24)) {
@@ -284,7 +282,7 @@ canvas.addEventListener("touchmove", function (e) {
 			return false;
 		}
 	}
-  
+  */
     return true;
     }
 
