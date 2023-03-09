@@ -105,7 +105,7 @@ canvas.addEventListener('mousedown', e => {
   console.log(e);
 
   
-  // Click up programmable mouse button -> ON/OFF SHADOWS oppure FIRST PERSON+FOLLOW
+  // Click up programmable mouse button
   if(e.which === 5){
     THETA = degToRad(-10), PHI = degToRad(-50);
     //settings.shadows = true;
