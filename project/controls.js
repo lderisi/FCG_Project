@@ -10,11 +10,11 @@ function define_gui() {
     
     gui.add(settings,"D").min(8).max(44).step(0.5).onChange(function() {
       controls_render();});
-    gui.add(settings,"posX").min(0).max(10).step(0.5).onChange(function() {
+    gui.add(settings,"lightX").min(0).max(10).step(0.5).onChange(function() {
       controls_render();});
-    gui.add(settings,"posY").min(8).max(25).step(0.5).onChange(function() {
+    gui.add(settings,"lightY").min(8).max(25).step(0.5).onChange(function() {
       controls_render();});
-    gui.add(settings,"posZ").min(0).max(10).step(0.5).onChange(function() {
+    gui.add(settings,"lightZ").min(0).max(10).step(0.5).onChange(function() {
       controls_render();});
     gui.add(settings,"targetX").min(0).max(5).step(0.5).onChange(function() {
       controls_render();});
@@ -28,7 +28,7 @@ function define_gui() {
       controls_render();});
     gui.add(settings,"bias").min(-0.01).max(0.001).step(0.0001).onChange(function() {
       controls_render();});
-    gui.add(settings,"lightFieldOfView").min(60).max(120).step(5).onChange(function() {
+    gui.add(settings,"fov").min(60).max(120).step(5).onChange(function() {
       controls_render();});
     gui.add(settings,"dx").min(-24).max(24).step(0.1).onChange(function() {
       controls_render();});
@@ -45,8 +45,6 @@ function define_gui() {
     gui.add(settings,"lightFrustum").onChange(function() {
       controls_render();});
     gui.add(settings,"shadows").onChange(function() {
-      controls_render();});
-    gui.add(settings,"fixCamera").onChange(function() {
       controls_render();});
       gui.add(settings,"startGame").onChange(function() {
         controls_render();});

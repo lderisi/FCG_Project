@@ -79,7 +79,7 @@ void main() {
   }
   </script>
   
-  <!-- * u_view glposition fragment shader -->
+  <!-- fragment shader -->
   <script  id="fragment-shader-3d" type="x-shader/x-fragment">
   precision mediump float;
   
@@ -98,7 +98,6 @@ void main() {
   uniform float mesh;
   uniform vec3 diffuse;
   uniform vec3 ambient;
-  uniform vec3 emissive;
   uniform vec3 specular;
   uniform float shininess;
   uniform float opacity;
@@ -140,21 +139,16 @@ void main() {
     float projectedDepth = texture2D(u_projectedTexture, projectedTexcoord.xy).r;
     float shadowLight = (inRange && projectedDepth <= currentDepth) ? 0.0 : 1.0;
     vec4 texColor = texture2D(u_texture, v_texcoord) * u_colorMult;
-  
-  
-    vec3 surfaceToViewDirection = normalize(v_surfaceToView);
-    vec3 halfVector = normalize(u_reverseLightDirection + surfaceToViewDirection);
 
-    float fakeLight = dot(u_reverseLightDirection, normal) * .5 + .5;
+
+    vec3 halfVector = normalize(u_reverseLightDirection);
+
+    float fLight = dot(u_reverseLightDirection, normal) * .5 + .5;
     float specularLight = clamp(dot(normal, halfVector), 0.0, 1.0);
 
-   
-    vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
-    vec3 effectiveDiffuse = diffuse *diffuseMapColor.rgb  * v_color.rgb ;
-    float effectiveOpacity = opacity  * diffuseMapColor.a * v_color.a;
-    
     vec4 color = (mesh==1.0) ? 
-      vec4((emissive + ambient * u_ambientLight + effectiveDiffuse * fakeLight + specular * pow(specularLight, shininess)) * shadowLight , effectiveOpacity) 
+      vec4((ambient * u_ambientLight + (diffuse*(texture2D(diffuseMap, v_texcoord)).rgb * v_color.rgb) * fLight + specular * pow(specularLight, shininess)) * shadowLight , 
+      (opacity*(texture2D(diffuseMap, v_texcoord)).a * v_color.a)) 
       : vec4( texColor.rgb * light * shadowLight, texColor.a);
 
     gl_FragColor = color;

@@ -326,13 +326,13 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
     gl.enable(gl.DEPTH_TEST);
 
     const lightWorldMatrix = m4.lookAt(
-        [settings.posX, settings.posY , settings.posZ],         
+        [settings.lightX, settings.lightY , settings.lightZ],         
         [settings.targetX, settings.targetY, settings.targetZ], 
         [0, 1, 0],                                             
     );
     const lightProjectionMatrix = settings.spotLight
         ? m4.perspective(
-            degToRad(settings.lightFieldOfView),
+            degToRad(settings.fov),
             settings.projWidth / settings.projHeight,
             1,  
             14)   
@@ -350,18 +350,13 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
 
     const up = [0, 1, 0];
 
-    
-    if(settings.fixCamera){
-      const target = [0, 0, 0];
-      var camera = [-settings.D*Math.sin(PHI)*Math.cos(THETA), settings.D*Math.cos(PHI), -settings.D*Math.sin(PHI)*Math.sin(THETA)];
-      var cameraMatrix = m4.lookAt(camera, target, up) ;
-    }
-    else {
     const target_follow = [settings.dx, 0 ,settings.dz];
     var camera_follow = [settings.dx+(-settings.D*Math.sin(PHI)*Math.cos(THETA)), settings.D*Math.cos(PHI), settings.dz+(-settings.D*Math.sin(PHI)*Math.sin(THETA))];
     var cameraMatrix = m4.lookAt(camera_follow, target_follow, up) ;
-    }
-    
+        
+
+
+
     truckUniforms = {
       u_world : m4.scale(m4.zRotate(m4.xRotate(m4.translation(settings.dx, -0.05, settings.dz),-1.57),angle),settings.scaleX,settings.scaleY,settings.scaleZ),
     }

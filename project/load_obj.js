@@ -5,6 +5,7 @@ function newDiffuseMap(gl) {
     };
 }
 
+
 function newDefaultMaterial(textures){
     return {
         diffuse: [1, 1, 1],
@@ -15,6 +16,8 @@ function newDefaultMaterial(textures){
         opacity: 1,
       };
 }
+
+
 
 async function load_obj(gl,objHref,use_MTL=true){
     const response = await fetch(objHref);
