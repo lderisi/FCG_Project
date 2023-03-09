@@ -105,7 +105,7 @@
 
 		Sono stati gestiti tre Shader Program:
 		<ul>
-			<li>['vertex-shader-3d', 'fragment-shader-3d']: usato per applicare le fonti colorate e quindi per gestire tutta la scena che è influenzata dalla luce </li>
+			<li>['vertex-shader-3d', 'fragment-shader-3d']: usato per applicare le fonti colorate e quindi per gestire tutta la scena che è influenzata dalla luce e dagli oggetti</li>
 		</ul>
 		<ul>
 			<li>['color-vertex-shader', 'color-fragment-shader']: per gestire le mesh illuminate dalle fonti luminose e quindi per gestire l'illuminazione e le ombre</li>
@@ -132,9 +132,9 @@
 		L'oggetto principale della scena è un camion giallo totalmente texturato con tutti i dettagli della carrozzeria,ruote,3 loghi dell'azienda e sul tettuccio un'immagine dell'autore del progetto come da requisiti e 
 		tutta la parte grafica di questo obj è stata curata nei minimi dettagli con l'ausilio di Blender che ha permesso di aggiungere dettagli al camion.
 
-		Per semplicità, il camioncino attualmente attraversa alcuni palazzi perchè le collisioni sono state gestite parzialmente ma nel codice sono state gettate le basi per gestirle conoscendo le coordinate dei vari oggetti 
-		in scena e considerandole come ostacoli. Il camion però viene visto come punto quindi per gestirle in maniera efficiente andrebbe considerato il camion come un insieme di punti e fare un check con le coordinate che 
-		incontra durante il movimento.	
+		Per semplicità, il camioncino attualmente attraversa alcuni palazzi perchè le collisioni sono state gestite parzialmente ma nel codice sono state gettate le basi per gestirle infatti,conoscendo le coordinate 
+		dei vari oggetti in scena, sarà possibile considerarli come ostacoli. Il camion però viene visto come punto quindi per gestirle in maniera efficiente andrebbe considerato il camion come un insieme di punti e 
+		fare un check con l' insieme di coordinate che incontra durante il movimento.	
 		</p>
 		<br>
 		<br>
@@ -180,10 +180,10 @@
 			
 			<h3>Logica del gioco</h3>
 			<p> L'interazione fornita all'utente gli permetterà di iniziare una sessione di gioco cliccando la rotella del mouse oppure cliccando il pulsante "startGame" dal menù a tendina. Una volta fatto ciò, avrà inizio
-			il gioco e l'utente potrà muoversi in tutta la mappa alla ricerca dei cassonetti da raccogliere che appariranno uno alla volta in maniera random, il tutto gestito affinchè non appaiano al di sotto degli OBJ 
-			in scena. Una volta che il camion arriva in prossimità del cassonetto, sarà possibile ritirarlo premendo la barra spaziatrice e ne apparirà un altro randomicamente nella mappa. Il gioco si conclude dopo che 3
+			il gioco e l'utente potrà muoversi in tutta la mappa alla ricerca dei cassonetti da raccogliere che appariranno uno alla volta in maniera random.
+			Una volta che il camion arriva in prossimità del cassonetto, sarà possibile ritirarlo premendo la barra spaziatrice e ne apparirà un altro randomicamente nella mappa. Il gioco si conclude dopo che 3
 			cassonetti vengono raccolti. 
-			L'inizio e la fine del gioco vengono segnalati da due alert e quando termina,sarà possibile continuare ad esplorare la mappa senza seguire la logica del gioco.
+			L'inizio e la fine del gioco vengono segnalati dagli alert e quando termina,sarà possibile continuare ad esplorare la mappa senza seguire la logica del gioco.
 		</p>
 			
 			
@@ -224,22 +224,22 @@
 				<h3>Pannello di controllo/Menù</h3>
 
 				<div>
-			<img src="images\ScreenShot\8.png" height="400" width="200"  >
+			<img src="images\ScreenShot\8.png" height="500" width="300"  >
 		</div>
 		
 		<p>
 			Il pannello di controllo è stato dettagliatamente curato e presenta diversi parametri modificabili:
-			<li>"Distance" permette di modificare la distanza dall'oggetto principale in scena</li>
-			<li>"cameraX","cameraY","cameraZ" permette di spostare la posizione della camera sugli asse X,Y,Z</li>
-			<li>"targetX","targetY","targetZ" permette di modificare le coordinate del punto in cui la camera sta guardando</li>
+			<li>"D" permette di modificare la distanza dall'oggetto principale in scena</li>
+			<li>"lightX","lightY","lightZ" permette di spostare la posizione della sorgente luminosa sugli assi X,Y,Z</li>
+			<li>"targetX","targetY","targetZ" permette di modificare le coordinate della sorgente luminosa</li>
 			<li>"projWidth", permette di modificare la larghezza della sorgente luminosa </li>
 			<li>"projHeight" permette di modificare l'altezza della sorgente luminosa </li>
-			<li>"bias" permette di modificare il bias</li>
+			<li>"bias" permette di modificare il bias e gestire l'effetto dello shadow acne</li>
 			<li>"fov" permette di modificare la Field of View</li>
 			<li>"dx", "dz" definiscono la modifica delle coordinate dell'oggetto</li>
-			<li>"scaleX", "scaleY", "scaleZ" definiscono la scalatura dell'oggetto</li>
+			<li>"scaleX", "scaleY", "scaleZ" permettono di scalare l'oggetto</li>
 			<li>"spotLight" permette di definire il tipo di illuminazione, direzionale o spot</li>
-			<li>"lightFrustum" permette di visualizzare il frustum della sorgente luminosa</li>
+			<li>"lightFrustum" permette di visualizzare il frustum della sorgente luminosa e varia al variare del tipo di luce</li>
 			<li>"shadows", permette di abilitare e disabilitare il rendering delle ombre</li>
 			<li>"startGame" permette di iniziare il gioco se non si dispone di un mouse con rotella cliccabile</li>
 			
@@ -261,10 +261,13 @@
 		</p>
 		</div>
 		<p>
+			Particolare attenzione è stata posta sulla fruibilità da mobile dell'applicazione.
 			Siccome su mobile non si può utilizzare la tastiera durante il gioco, sono stati gestiti i movimenti tramite gli eventi touch e il menu a tendina può essere modificato interattivamente tramite
-            le gesture del touch. L'utilizzo è molto semplice per un'applicazione del genere ed è molto intuitivo infatti permette all'utente di spostare il camion ed esplorare la mappa tramite i pulsanti touch 
-			che permettono all'utente di muoversi in avanti,in retromarcia,destra e sinistra e di giocare a raccogliere i cassonetti anche da mobile cliccando il pulsante "Ritiro" come si può vedere nella demo video.
-			Al momento non è implementata ma si potrebbe utilizzare il multi-touch dello smartphone.
+            le gesture del touch. L'utilizzo è molto semplice per un'applicazione del genere ed è molto intuitivo infatti permette all'utente di spostare il camion ed esplorare la mappa tramite i pulsanti touch che appaiono
+			sullo schermo solo nel caso in cui ci troviamo da un dispositivo mobile. (Se switchiamo da versione desktop a mobile è richiesto un refresh della pagina web). 
+			Le gesture touch permettono all'utente di ruotare la camera per guardarsi intorno e cliccando i pulsanti "A"-"R"-"Dx"-"Sx" potrà  muoversi in avanti,in retromarcia,destra e sinistra e di giocare a 
+			raccogliere i cassonetti anche da mobile cliccando il pulsante "Ritiro" come si può vedere nella demo video.
+			Al momento non è implementata ma si potrebbe utilizzare il multi-touch dello smartphone per altre features.
 			<br>
 		</p>
 		<br>
