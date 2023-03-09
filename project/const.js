@@ -43,7 +43,6 @@ const settings = {
     scaleZ:1.2,
     bias: -0.006,
     shadows: false,
-    fixCamera: false,
     startGame: false,
   };
   
