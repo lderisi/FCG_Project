@@ -144,7 +144,7 @@
 				var j = 0;
 				for (let i = 0; i <= dim-1; i ++) {
 					nurbsControlPoints.push(   //pushiamo i cp nel vettore ControlPoints
-						new THREE.Vector4(
+						new THREE.Vector4(  //each control point is represented as a THREE.Vector4
 							cp[j],
 							cp[j + 1],
 							cp[j + 2],
@@ -184,6 +184,7 @@
 					element_properties[i].w = Math.random(); // Gestiamo l'attraction
 				}
                 
+				//DRAW LINE
 				//console.log(element_properties);
 				const nurbsCurve = new NURBSCurve(nurbsDegree, nurbsKnots, nurbsControlPoints);
 				const nurbsGeometry = new THREE.BufferGeometry();
@@ -198,15 +199,17 @@
 
 				const nurbsLine = new THREE.Line(nurbsGeometry, nurbsMaterial); //passiamo geometria e materiale per creare la linea di NURBS
 				
+				//Computa il Frenet Frame per la nostra curva NURBS in tutti i punti 
 				var dst = [];
 				for (var i = 0; i <= npt; i++){
 					dst[i] = i/npt;
 					FFobject[i] = nurbsCurve.computeFrenetFrames(dst[i]);
 				}   //Computazione del Frenet Frame (frame di riferimento ortogonale per ogni punto della curva)
-	
+					//The purpose of this code is to compute Frenet frames along a NURBS curve and use them to create a visual representation of the curve using a line object.
 				group.add(nurbsLine);
 				camera.lookAt(scene.position);
-
+                
+				group.add(nurbsControlPoints);
 				//
 
 				renderer = new THREE.WebGLRenderer({ antialias: true }); // antialiasing abilitato
@@ -221,7 +224,6 @@
 				container.style.touchAction = 'none';
 				container.addEventListener('pointerdown', onPointerDown);
 
-				//
 
 				window.addEventListener('resize', onWindowResize);
 
@@ -323,12 +325,18 @@
 					light.position.y = nrbC[step].y;
 					light.position.z = nrbC[step].z;
 				}
+				else{
+					light.position.x = 1;  //mette posizione della luce fissa
+					light.position.y = 1;
+					light.position.z = 1;
+				}
 
 				//Add or remove elements
 				for (let i = 0; i < config.elements_number; i++) {
 					if(config.spheres) {
 						scene.add(spheres[i]);
-						for (let i = 0; i < config.elements_number; i++) { scene.remove(cubes[i]); }					} else {
+						for (let i = 0; i < config.elements_number; i++) { scene.remove(cubes[i]); }
+					} else {
 						scene.add(cubes[i]);
 						for (let i = 0; i < config.elements_number; i++) { scene.remove(spheres[i]); }
 					}	
