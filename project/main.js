@@ -159,7 +159,7 @@ async function main() {
       gl.TEXTURE_2D,        
       depthTexture,         
       0);                   
-
+//OPENGL RULES - For a bunch of reasons we also need to create a color texture and attach it as a color attachment even though we won't actually use it.
   const unusedTexture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, unusedTexture);
   gl.texImage2D(
@@ -344,6 +344,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
              settings.zNear,  
             settings.zFar);    
 
+    // draw to the depth texture
     gl.bindFramebuffer(gl.FRAMEBUFFER, depthFramebuffer);
     gl.viewport(0, 0, depthTextureSize, depthTextureSize);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -371,7 +372,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
     }
     
     
-    
+    // now draw scene to the canvas projecting the depth texture into the scene
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.clearColor(0, 0, 0, 1);
@@ -387,7 +388,7 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
         textureMatrix,
         m4.inverse(lightWorldMatrix));
 
-   
+   //we need to pass in the aspect for computing our projection matrix because our target texture has a different aspect than the canvas.
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     const projectionMatrix =
         m4.perspective(fieldOfViewRadians, aspect, 1, 2000); 
