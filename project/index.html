@@ -138,7 +138,7 @@ void main() {
     // che è stata inizializzata al giro prededente quando è stata chiamata drawShadow
     //
     float projectedDepth = texture2D(u_projectedTexture, projectedTexcoord.xy).r;
-    float shadowLight = (inRange && projectedDepth <= currentDepth) ? 0.0 : 1.0;
+    float shadowLight = (inRange && projectedDepth <= currentDepth) ? 0.0 : 1.0; //Se la shadow map è piu piccola = ombra
     vec4 texColor = texture2D(u_texture, v_texcoord) * u_colorMult;
 
 
