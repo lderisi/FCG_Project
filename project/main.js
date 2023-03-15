@@ -334,15 +334,15 @@ function drawUniverse(projectionMatrix,cameraMatrix,textureMatrix,lightWorldMatr
         ? m4.perspective(
             degToRad(settings.fov),
             settings.projWidth / settings.projHeight,
-            1,  
-            14)   
+            settings.zNear,  
+            settings.zFar)   
         : m4.orthographic(
             -settings.projWidth / 2,   
              settings.projWidth / 2,   
             -settings.projHeight / 2, 
              settings.projHeight / 2,  
-             1,                      
-             15);    
+             settings.zNear,  
+            settings.zFar);    
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, depthFramebuffer);
     gl.viewport(0, 0, depthTextureSize, depthTextureSize);

@@ -26,6 +26,10 @@ function define_gui() {
       controls_render();});
     gui.add(settings,"projHeight").min(0).max(7).step(0.5).onChange(function() {
       controls_render();});
+    gui.add(settings,"zNear").min(1).max(10).step(0.001).onChange(function() {
+        controls_render();});
+    gui.add(settings,"zFar").min(14).max(30).step(0.5).onChange(function() {
+        controls_render();});
     gui.add(settings,"bias").min(-0.01).max(0.001).step(0.0001).onChange(function() {
       controls_render();});
     gui.add(settings,"fov").min(60).max(120).step(5).onChange(function() {

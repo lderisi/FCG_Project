@@ -32,6 +32,8 @@ const settings = {
     targetZ: 0,
     projWidth: 5,
     projHeight: 5,
+    zNear: 1,
+    zFar:14,
     spotLight: false,
     fov: 60,
     bias: -0.006,
