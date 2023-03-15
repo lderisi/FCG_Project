@@ -238,7 +238,7 @@ canvas.addEventListener("touchmove", function (e) {
   if (!(dx <= 23 && dx >= -23 && dz <= 23 && dz >= -23)){
     return false;
   } 
-
+/*
   	//collision building 4 
 
 	if ((dx >= -26) && (dx <= -13)) {
@@ -255,7 +255,7 @@ canvas.addEventListener("touchmove", function (e) {
 			return false;
 		}
 	}
-
+*/
   /*
 	//collision building  
 	if ((dx >= 17) && (dx <= 25)) {
